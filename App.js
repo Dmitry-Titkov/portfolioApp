@@ -1,10 +1,5 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import FrontPage from "./src/component/FrontPage";
-
-export default function App() {
-  return <FrontPage />;
-}
 
 const styles = StyleSheet.create({
   container: {
