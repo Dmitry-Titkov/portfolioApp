@@ -9,7 +9,9 @@ import {
   TextInput,
   TouchableWithoutFeedback,
   Image,
+  Button,
 } from "react-native";
+import DatePicker from "react-native-datepicker";
 
 class SetAuction extends React.Component {
   state = {
@@ -30,6 +32,11 @@ class SetAuction extends React.Component {
     successStatus: "",
     isConnected: null,
   };
+  constructor(props) {
+    super(props);
+    //set value in state for initial date
+    this.state = { date: new Date() };
+  }
 
   render() {
     let img =
@@ -47,12 +54,6 @@ class SetAuction extends React.Component {
     return (
       <View style={styles.container}>
         <ScrollView>
-          <StatusBar backgroundColor="Green" />
-          {!this.state.isConnected ? (
-            <View style={styles.loadBar}>
-              <Text style={styles.white}>Please check your Internet! </Text>
-            </View>
-          ) : null}
           <View style={styles.body}>
             <View style={styles.form}>
               <View style={[styles.formRow]}>
@@ -101,54 +102,53 @@ class SetAuction extends React.Component {
                 <View style={styles.formLabel}>
                   <Text style={styles.labelText}></Text>
                 </View>
-                <View style={styles.formInputControl}>
-                  <TouchableWithoutFeedback
-                  // onPress={this.showDatePicker.bind(this, "end", {
-                  //   date: this.state.endDate,
-                  //   minDate: Date.now() + 172800000,
-                  //   maxDate: Date.now() + 62208000000,
-                  // })}
-                  >
-                    <View>
-                      <Text style={{ paddingTop: 15, paddingBottom: 15 }}>
-                        {this.state.endDateText}
-                      </Text>
-                    </View>
-                  </TouchableWithoutFeedback>
-                </View>
-              </View>
-              <View style={[styles.formRow]}>
-                <View style={styles.formLabel}>
-                  <Text style={styles.labelText}></Text>
-                </View>
-                <View style={styles.formInputControl}>
-                  <TouchableWithoutFeedback
-                  // onPress={this.showTimePicker.bind(this, "endTime", {
-                  //   hour: this.state.endTimeHour,
-                  //   minute: this.state.endTimeMinute,
-                  //   is24Hour: true,
-                  // })}
-                  >
-                    <View>
-                      <Text style={{ paddingTop: 15, paddingBottom: 15 }}>
-                        {this.state.endTimeText}
-                      </Text>
-                    </View>
-                  </TouchableWithoutFeedback>
-                </View>
+                <DatePicker
+                  style={{ width: 200 }}
+                  date={this.state.date}
+                  mode="date"
+                  placeholder="select date"
+                  format="DD-MM-YYYY"
+                  minDate="01-01-2016"
+                  maxDate="01-01-2019"
+                  confirmBtnText="Confirm"
+                  cancelBtnText="Cancel"
+                  customStyles={{
+                    dateIcon: {
+                      position: "absolute",
+                      left: 0,
+                      top: 4,
+                      marginLeft: 0,
+                    },
+                    dateInput: {
+                      marginLeft: 36,
+                    },
+                  }}
+                  onDateChange={(date) => {
+                    this.setState({ date: date });
+                  }}
+                />
               </View>
               <TouchableHighlight
                 style={[styles.formButton]}
-                // onPress={this.show.bind(this)}
                 underlayColor="Green"
               >
                 <View>
-                  <View style={styles.photoSelect}>
-                    <Text style={styles.photoSelectText}>Add a photo.</Text>
+                  <View style={styles.formRowButtons}>
+                    <TouchableHighlight
+                      style={styles.buttonTouch}
+                      onPress={() => {
+                        this.sendData();
+                      }}
+                      underlayColor="blue"
+                    >
+                      <View style={styles.button}>
+                        <Text style={styles.buttonText}>add a photo</Text>
+                      </View>
+                    </TouchableHighlight>
                   </View>
                 </View>
               </TouchableHighlight>
-              {img ? <View style={styles.imgHolder}>{img}</View> : null}
+              <View style={styles.imgHolder}>{img}</View>
               <View style={[styles.formRow]}>
                 <View style={styles.formLabelDescription}>
                   <Text style={styles.labelText}></Text>
@@ -185,19 +185,17 @@ class SetAuction extends React.Component {
                 </View>
               ) : null}
               <View style={styles.formRowButtons}>
-                {this.state.traffic == 0 ? (
-                  <TouchableHighlight
-                    style={styles.buttonTouch}
-                    onPress={() => {
-                      this.sendData();
-                    }}
-                    underlayColor="Green"
-                  >
-                    <View style={styles.button}>
-                      <Text style={styles.buttonText}>Sell product</Text>
-                    </View>
-                  </TouchableHighlight>
-                ) : null}
+                <TouchableHighlight
+                  style={styles.buttonTouch}
+                  onPress={() => {
+                    this.sendData();
+                  }}
+                  underlayColor="Green"
+                >
+                  <View style={styles.button}>
+                    <Text style={styles.buttonText}>Sell product</Text>
+                  </View>
+                </TouchableHighlight>
               </View>
             </View>
           </View>

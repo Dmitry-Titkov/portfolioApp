@@ -25,14 +25,6 @@ class FrontPage extends React.Component {
     return (
       <View style={([styles.container], { paddingBottom: 53, paddingTop: 53 })}>
         <ScrollView>
-          <StatusBar backgroundColor="#f15a24" />
-          {!this.state.isConnected ? (
-            <View style={{ backgroundColor: "red", alignItems: "center" }}>
-              <Text style={{ color: "#ffffff" }}>
-                Please check your connection.{" "}
-              </Text>
-            </View>
-          ) : null}
           <View style={styles.body}>
             {this.state.respoData ? (
               <FlatList
@@ -55,7 +47,10 @@ class FrontPage extends React.Component {
                       <View>
                         <Image
                           style={{ width: 80, height: 80, borderRadius: 50 }}
-                          source={{ uri: item.picture }}
+                          source={{
+                            uri:
+                              "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.expatica.com%2Fnl%2Ffinance%2Finsurance%2Fcar-insurance-in-the-netherlands-115185%2F&psig=AOvVaw1YMXILKwBkHOnP51S-XaNl&ust=1593226558393000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCKCYkMq9nuoCFQAAAAAdAAAAABAE",
+                          }}
                         />
                       </View>
                       <View style={{ paddingLeft: 10 }}>

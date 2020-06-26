@@ -26,14 +26,6 @@ class Register extends React.Component {
     return (
       <View style={styles.container}>
         <ScrollView>
-          <StatusBar backgroundColor="#f15a24" />
-          {!this.state.isConnected ? (
-            <View style={{ backgroundColor: "red", alignItems: "center" }}>
-              <Text style={{ color: "#ffffff" }}>
-                Please check your Internet!{" "}
-              </Text>
-            </View>
-          ) : null}
           <View style={styles.body}>
             <View style={styles.registerForm}>
               <View style={[styles.formRow]}>
@@ -191,9 +183,7 @@ class Register extends React.Component {
                   <View style={styles.formRowButtons}>
                     <TouchableHighlight
                       style={styles.buttonTouch}
-                      onPress={() => {
-                        Actions.pop();
-                      }}
+                      onPress={() => this.props.navigation.navigate("Login")}
                     >
                       <View style={styles.button}>
                         <Text style={styles.buttonText}>

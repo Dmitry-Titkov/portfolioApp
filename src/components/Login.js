@@ -95,9 +95,7 @@ class Login extends React.Component {
                   <View style={styles.formRowButtons}>
                     <TouchableHighlight
                       style={styles.buttonTouch}
-                      onPress={() => {
-                        Actions.register();
-                      }}
+                      onPress={() => this.props.navigation.navigate("Register")}
                     >
                       <View style={styles.button}>
                         <Text style={styles.buttonText}>
