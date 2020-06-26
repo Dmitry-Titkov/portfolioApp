@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View, Image, Button, StyleSheet } from "react-native";
 
-export default function StartPage({ navigation }) {
+export default function Profile({ navigation }) {
   return (
     <View>
       <Text>My auctions</Text>
