@@ -11,11 +11,22 @@ import {
 
 class Login extends React.Component {
   state = {
-    username: "",
+    email: "",
     password: "",
-    traffic: 0,
-    isConnected: null,
   };
+
+  SubmitForm() {
+    var data = [
+      {
+        name: "email",
+        data: this.state.email,
+        name: "password",
+        data: this.state.password,
+      },
+    ];
+    axios.post(`http://localhost:4000/login`, data);
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -32,10 +43,10 @@ class Login extends React.Component {
                     style={styles.formInputText}
                     placeholder="Email..."
                     underlineColorAndroid="rgba(0, 0, 0, 0)"
-                    onChangeText={(login) => {
-                      this.setState({ username: login });
+                    onChangeText={(event) => {
+                      this.setState({ email: event });
                     }}
-                    value={this.state.username}
+                    value={email}
                     autoCorrect={false}
                     keyboardType="email-address"
                     returnKeyType="next"
@@ -56,8 +67,8 @@ class Login extends React.Component {
                     style={[styles.formInputText]}
                     placeholder="Password..."
                     underlineColorAndroid="rgba(0, 0, 0, 0)"
-                    onChangeText={(pass) => {
-                      this.setState({ password: pass });
+                    onChangeText={(event) => {
+                      this.setState({ password: event });
                     }}
                     value={this.state.password}
                     autoCorrect={false}
@@ -66,46 +77,32 @@ class Login extends React.Component {
                   />
                 </View>
               </View>
-              {this.state.responseMsg ? (
-                <View
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    paddingTop: 20,
-                  }}
-                >
-                  <Text style={{ color: this.state.statusColor }}>
-                    {this.state.responseMsg}
-                  </Text>
+
+              <View>
+                <View style={styles.formRowButtons}>
+                  <TouchableHighlight
+                    onPress={() => {
+                      this.SubmitForm();
+                    }}
+                  >
+                    <View style={styles.button}>
+                      <Text style={styles.buttonText}>Login</Text>
+                    </View>
+                  </TouchableHighlight>
                 </View>
-              ) : null}
-              {this.state.traffic == 0 ? (
-                <View>
-                  <View style={styles.formRowButtons}>
-                    <TouchableHighlight
-                      onPress={() => {
-                        this.login();
-                      }}
-                    >
-                      <View style={styles.button}>
-                        <Text style={styles.buttonText}>Login</Text>
-                      </View>
-                    </TouchableHighlight>
-                  </View>
-                  <View style={styles.formRowButtons}>
-                    <TouchableHighlight
-                      style={styles.buttonTouch}
-                      onPress={() => this.props.navigation.navigate("Register")}
-                    >
-                      <View style={styles.button}>
-                        <Text style={styles.buttonText}>
-                          Don't have an account yet?
-                        </Text>
-                      </View>
-                    </TouchableHighlight>
-                  </View>
+                <View style={styles.formRowButtons}>
+                  <TouchableHighlight
+                    style={styles.buttonTouch}
+                    onPress={() => this.props.navigation.navigate("Register")}
+                  >
+                    <View style={styles.button}>
+                      <Text style={styles.buttonText}>
+                        Don't have an account yet?
+                      </Text>
+                    </View>
+                  </TouchableHighlight>
                 </View>
-              ) : null}
+              </View>
             </View>
           </View>
         </ScrollView>
