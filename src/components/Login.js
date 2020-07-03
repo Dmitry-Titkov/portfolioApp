@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
+import axios from "axios";
 import {
   StyleSheet,
   TouchableHighlight,
@@ -16,14 +17,11 @@ class Login extends React.Component {
   };
 
   SubmitForm() {
-    var data = [
-      {
-        name: "email",
-        data: this.state.email,
-        name: "password",
-        data: this.state.password,
-      },
-    ];
+    var data = {
+      email: this.state.email,
+      password: this.state.password,
+    };
+
     axios.post(`http://localhost:4000/login`, data);
   }
 
@@ -46,7 +44,7 @@ class Login extends React.Component {
                     onChangeText={(event) => {
                       this.setState({ email: event });
                     }}
-                    value={email}
+                    value={this.state.email}
                     autoCorrect={false}
                     keyboardType="email-address"
                     returnKeyType="next"
@@ -94,6 +92,7 @@ class Login extends React.Component {
                   <TouchableHighlight
                     style={styles.buttonTouch}
                     onPress={() => this.props.navigation.navigate("Register")}
+                    alert
                   >
                     <View style={styles.button}>
                       <Text style={styles.buttonText}>

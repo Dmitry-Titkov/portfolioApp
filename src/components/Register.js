@@ -1,26 +1,32 @@
 import React, { Component } from "react";
+import axios from "axios";
 import {
   StyleSheet,
   TouchableHighlight,
   ScrollView,
   Text,
   View,
-  StatusBar,
+  Alert,
   TextInput,
 } from "react-native";
 
 class Register extends React.Component {
   state = {
-    firstname: "",
-    lastname: "",
+    displayName: "",
     email: "",
-    phone: "",
     password: "",
     repassword: "",
-    traffic: 0,
-    responseMsg: "",
-    isConnected: null,
   };
+
+  SubmitForm() {
+    var data = {
+      email: this.state.email,
+      displayName: this.state.displayName,
+      password: this.state.password,
+    };
+
+    axios.post(`http://localhost:4000/signup`, data);
+  }
 
   render() {
     return (
@@ -35,12 +41,12 @@ class Register extends React.Component {
                 <View style={styles.formInputControl}>
                   <TextInput
                     style={styles.formInputText}
-                    placeholder="Firstname..."
+                    placeholder="Displayname..."
                     underlineColorAndroid="rgba(0, 0, 0, 0)"
-                    onChangeText={(fname) => {
-                      this.setState({ firstname: fname });
+                    onChangeText={(event) => {
+                      this.setState({ displayName: event });
                     }}
-                    value={this.state.firstname}
+                    value={this.state.displayName}
                     autoCorrect={false}
                     returnKeyType="next"
                     ref="1"
@@ -48,6 +54,7 @@ class Register extends React.Component {
                   />
                 </View>
               </View>
+
               <View style={[styles.formRow]}>
                 <View style={styles.formLabel}>
                   <Text style={styles.labelText}></Text>
@@ -55,13 +62,14 @@ class Register extends React.Component {
                 <View style={styles.formInputControl}>
                   <TextInput
                     style={[styles.formInputText]}
-                    placeholder="Lastname..."
+                    placeholder="Email..."
                     underlineColorAndroid="rgba(0, 0, 0, 0)"
-                    onChangeText={(lname) => {
-                      this.setState({ lastname: lname });
+                    onChangeText={(event) => {
+                      this.setState({ email: event });
                     }}
-                    value={this.state.lastname}
+                    value={this.state.email}
                     autoCorrect={false}
+                    keyboardType="email-address"
                     returnKeyType="next"
                     ref="2"
                     onSubmitEditing={() => this.focusNextField("3")}
@@ -76,14 +84,14 @@ class Register extends React.Component {
                 <View style={styles.formInputControl}>
                   <TextInput
                     style={[styles.formInputText]}
-                    placeholder="Email..."
+                    placeholder="Password..."
                     underlineColorAndroid="rgba(0, 0, 0, 0)"
-                    onChangeText={(email) => {
-                      this.setState({ email: email });
+                    onChangeText={(event) => {
+                      this.setState({ password: event });
                     }}
-                    value={this.state.email}
+                    value={this.state.password}
                     autoCorrect={false}
-                    keyboardType="email-address"
+                    secureTextEntry={true}
                     returnKeyType="next"
                     ref="3"
                     onSubmitEditing={() => this.focusNextField("4")}
@@ -97,103 +105,45 @@ class Register extends React.Component {
                 <View style={styles.formInputControl}>
                   <TextInput
                     style={[styles.formInputText]}
-                    placeholder="Phone number..."
-                    underlineColorAndroid="rgba(0, 0, 0, 0)"
-                    onChangeText={(phone) => {
-                      this.setState({ phone: phone });
-                    }}
-                    value={this.state.phone}
-                    autoCorrect={false}
-                    keyboardType="phone-pad"
-                    returnKeyType="next"
-                    ref="4"
-                    onSubmitEditing={() => this.focusNextField("5")}
-                  />
-                </View>
-              </View>
-              <View style={[styles.formRow]}>
-                <View style={styles.formLabel}>
-                  <Text style={styles.labelText}></Text>
-                </View>
-                <View style={styles.formInputControl}>
-                  <TextInput
-                    style={[styles.formInputText]}
-                    placeholder="Password..."
-                    underlineColorAndroid="rgba(0, 0, 0, 0)"
-                    onChangeText={(pass) => {
-                      this.setState({ password: pass });
-                    }}
-                    value={this.state.password}
-                    autoCorrect={false}
-                    secureTextEntry={true}
-                    returnKeyType="next"
-                    ref="5"
-                    onSubmitEditing={() => this.focusNextField("6")}
-                  />
-                </View>
-              </View>
-              <View style={[styles.formRow]}>
-                <View style={styles.formLabel}>
-                  <Text style={styles.labelText}></Text>
-                </View>
-                <View style={styles.formInputControl}>
-                  <TextInput
-                    style={[styles.formInputText]}
                     placeholder="Confirm password..."
                     underlineColorAndroid="rgba(0, 0, 0, 0)"
-                    onChangeText={(repass) => {
-                      this.setState({ repassword: repass });
+                    onChangeText={(event) => {
+                      this.setState({ repassword: event });
                     }}
                     value={this.state.repassword}
                     autoCorrect={false}
                     secureTextEntry={true}
-                    ref="6"
+                    ref="4"
                   />
                 </View>
               </View>
-              {this.state.responseMsg != "" ? (
-                <View style={styles.status}>
-                  <Text
-                    style={[
-                      {
-                        flex: 1,
-                        textAlign: "center",
-                        color: this.state.statusColor,
-                      },
-                    ]}
+
+              <View>
+                <View style={styles.formRowButtons}>
+                  <TouchableHighlight
+                    onPress={() => {
+                      this.SubmitForm();
+                      this.props.navigation.navigate("Login");
+                    }}
                   >
-                    &nbsp;&nbsp;&nbsp;
-                    {this.state.responseMsg}
-                  </Text>
+                    <View style={styles.button}>
+                      <Text style={styles.buttonText}>Register</Text>
+                    </View>
+                  </TouchableHighlight>
                 </View>
-              ) : null}
-              {this.state.traffic == 0 ? (
-                <View>
-                  <View style={styles.formRowButtons}>
-                    <TouchableHighlight
-                      onPress={() => {
-                        this.register();
-                      }}
-                    >
-                      <View style={styles.button}>
-                        <Text style={styles.buttonText}>Register</Text>
-                      </View>
-                    </TouchableHighlight>
-                  </View>
-                  <View style={styles.formRowButtons}>
-                    <TouchableHighlight
-                      style={styles.buttonTouch}
-                      onPress={() => this.props.navigation.navigate("Login")}
-                    >
-                      <View style={styles.button}>
-                        <Text style={styles.buttonText}>
-                          Have an account? Login
-                        </Text>
-                      </View>
-                    </TouchableHighlight>
-                  </View>
+                <View style={styles.formRowButtons}>
+                  <TouchableHighlight
+                    style={styles.buttonTouch}
+                    onPress={() => this.props.navigation.navigate("Login")}
+                  >
+                    <View style={styles.button}>
+                      <Text style={styles.buttonText}>
+                        Have an account? Login
+                      </Text>
+                    </View>
+                  </TouchableHighlight>
                 </View>
-              ) : null}
+              </View>
             </View>
           </View>
         </ScrollView>

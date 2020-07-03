@@ -12,15 +12,25 @@ import Profile from "./src/components/Profile";
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
 
+let isLoggedIn = true;
+
 function Navigatiion() {
-  return (
-    <Tab.Navigator>
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Login" component={LoginScreen} />
-      <Tab.Screen name="Sell" component={startAuction} />
-      <Tab.Screen name="Profile" component={Profile} />
-    </Tab.Navigator>
-  );
+  if (isLoggedIn === false) {
+    return (
+      <Tab.Navigator>
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Login" component={LoginScreen} />
+      </Tab.Navigator>
+    );
+  } else {
+    return (
+      <Tab.Navigator>
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Sell" component={startAuction} />
+        <Tab.Screen name="Profile" component={Profile} />
+      </Tab.Navigator>
+    );
+  }
 }
 
 function App() {

@@ -11,18 +11,9 @@ import {
   TextInput,
   FlatList,
   Image,
-  AsyncStorage,
-  NetInfo,
 } from "react-native";
 
 export default function List() {
-  state = {
-    respoData: "",
-    networkResponse: "",
-    statusColor: "rgba(0,255,0,0.8)",
-    isConnected: null,
-  };
-
   const styles = StyleSheet.create({
     container: {
       marginTop: 53,
