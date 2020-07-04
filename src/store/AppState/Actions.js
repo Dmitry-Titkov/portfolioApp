@@ -37,7 +37,7 @@ export const showMessageWithTimeout = (
   };
 };
 
-export function giveLike(state) {
+export function giveReview(state) {
   return {
     type: LEAVE_REVIEW,
   };

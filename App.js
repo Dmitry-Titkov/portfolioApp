@@ -8,18 +8,23 @@ import RegisterScreen from "./src/components/Register";
 import DetailsPage from "./src/components/DetailsPage";
 import startAuction from "./src/components/SetAuction";
 import Profile from "./src/components/Profile";
+import store from "./src/store/index";
+import rootReducer from "./src/store/rootReducer";
+import { Provider } from "react-redux";
+import SignIn from "./src/components/Login";
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createStackNavigator();
 
-let isLoggedIn = true;
+let isLoggedIn = false;
 
 function Navigatiion() {
   if (isLoggedIn === false) {
     return (
       <Tab.Navigator>
         <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Login" component={LoginScreen} />
+        <Tab.Screen name="Login" component={SignIn} />
+        <Tab.Screen name="Profile" component={Profile} />
       </Tab.Navigator>
     );
   } else {
@@ -35,13 +40,15 @@ function Navigatiion() {
 
 function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Action App" component={Navigatiion} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="Details" component={DetailsPage} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Action App" component={Navigatiion} />
+          <Stack.Screen name="Register" component={RegisterScreen} />
+          <Stack.Screen name="Details" component={DetailsPage} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }
 

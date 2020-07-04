@@ -1,6 +1,6 @@
 import { apiUrl } from "../../config/constants";
 import axios from "axios";
-import { selectToken } from "./selectors";
+import { selectToken } from "./selector";
 import {
   appLoading,
   appDoneLoading,
@@ -31,7 +31,7 @@ export const signUp = (displayName, email, password) => {
     dispatch(appLoading());
     try {
       const response = await axios.post(`${apiUrl}/signup`, {
-        name,
+        displayName,
         email,
         password,
       });
@@ -53,7 +53,7 @@ export const signUp = (displayName, email, password) => {
 };
 
 export const login = (email, password) => {
-  return async (dispatch, getState) => {
+  return async function (dispatch, getState) {
     dispatch(appLoading());
     try {
       const response = await axios.post(`${apiUrl}/login`, {

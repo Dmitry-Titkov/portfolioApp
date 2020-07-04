@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import {
@@ -14,6 +14,8 @@ import {
   AsyncStorage,
   NetInfo,
 } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUser } from "../../src/store/user/selector";
 
 export default function Profile({ navigation }) {
   const styles = StyleSheet.create({
@@ -84,18 +86,14 @@ export default function Profile({ navigation }) {
 
   const [userList, setUserList] = useState([]);
   const [reviewsList, setReviewsList] = useState([]);
+  const user = useSelector(selectUser);
+  console.log("user", user);
 
   async function FetchUser() {
     const response = await axios.get(`http://localhost:4000/user/1`);
     setUserList(response.data);
-    setReviewsList(
-      response.data.reviews.map((review) => {
-        {
-          review.comment, review.stars;
-        }
-      })
-    );
-    console.log(response.data.reviews[0]["comment"]);
+    setReviewsList(response.data.reviews);
+    console.log(response.data.reviews);
   }
 
   useEffect(() => {
@@ -109,7 +107,14 @@ export default function Profile({ navigation }) {
           <br></br>
           {userList.createdAt}
           <br></br>
-          {console.log(reviewsList)}
+          {reviewsList.map((review) => {
+            return (
+              <View>
+                <Text>{review.comment}</Text>
+                <Text>{JSON.stringify(user)}</Text>
+              </View>
+            );
+          })}
         </Text>
       </ScrollView>
     </View>
