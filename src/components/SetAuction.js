@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import {
   StyleSheet,
@@ -13,128 +13,123 @@ import {
   Button,
 } from "react-native";
 import DatePicker from "react-native-datepicker";
+import { selectUser } from "../store/user/selector";
+import { useDispatch, useSelector } from "react-redux";
 
-class SetAuction extends React.Component {
-  state = {
-    title: "",
-    minimumBid: "",
-    descriptor: "",
-    end: new Date(),
-    imageUrl: "",
-  };
-  SubmitForm() {
+export default function SetAuction() {
+  const [title, setTitle] = useState("");
+  const [minimumBid, setMinimumBid] = useState("");
+  const [descriptor, setDescriptor] = useState("");
+  const [end, setEnd] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const user = useSelector(selectUser);
+
+  function SubmitForm() {
     var data = {
-      name: this.state.title,
-
-      minimumBid: this.state.minimumBid,
-
-      end_date: this.state.end,
-
-      description: this.state.descriptor,
-
-      image: this.state.imageUrl,
+      name: title,
+      minimumBid: minimumBid,
+      date_end: end,
+      description: descriptor,
+      image: imageUrl,
     };
-    axios.post(`http://localhost:4000/auctions/1/create`, data);
+
+    var header = { headers: { Authorization: `Bearer ${user.token}` } };
+
+    axios.post(`http://localhost:4000/auctions/1/create`, data, header);
   }
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <ScrollView>
-          <View style={styles.body}>
-            <View style={styles.form}>
-              <View style={[styles.formRow]}>
-                <View style={styles.formLabel}>
-                  <Text style={styles.labelText}></Text>
-                </View>
-                <View style={styles.formInputControl}>
-                  <TextInput
-                    style={styles.formInputText}
-                    placeholder="Product name..."
-                    underlineColorAndroid="Green"
-                    onChangeText={(event) => {
-                      this.setState({ title: event });
-                    }}
-                    value={this.state.title}
-                    autoCorrect={false}
-                    returnKeyType="next"
-                    ref="1"
-                    onSubmitEditing={() => {
-                      this.focusNextField("2");
-                    }}
-                  />
-                </View>
+  return (
+    <View style={styles.container}>
+      <ScrollView>
+        <View style={styles.body}>
+          <View style={styles.form}>
+            <View style={[styles.formRow]}>
+              <View style={styles.formLabel}>
+                <Text style={styles.labelText}></Text>
               </View>
-              <View style={[styles.formRow]}>
-                <View style={styles.formLabel}>
-                  <Text style={styles.labelText}></Text>
-                </View>
-                <View style={styles.formInputControl}>
-                  <TextInput
-                    style={styles.formInputText}
-                    placeholder="Minimal price..."
-                    keyboardType="numeric"
-                    underlineColorAndroid={"Green"}
-                    onChangeText={(event) => {
-                      this.setState({ minimumBid: event });
-                    }}
-                    value={this.state.minimumBid}
-                    autoCorrect={false}
-                    returnKeyType="next"
-                    ref="2"
-                  />
-                </View>
-              </View>
-              <View style={[styles.formRow]}>
-                <View style={styles.formLabel}>
-                  <Text style={styles.labelText}></Text>
-                </View>
-                <DatePicker
-                  style={{ width: 200 }}
-                  date="01-08-2020"
-                  mode="date"
-                  placeholder="select date"
-                  format="DD-MM-YYYY"
-                  minDate="01-08-2020"
-                  maxDate="31-12-2020"
-                  confirmBtnText="Confirm"
-                  cancelBtnText="Cancel"
-                  customStyles={{
-                    dateIcon: {
-                      position: "absolute",
-                      left: 0,
-                      top: 4,
-                      marginLeft: 0,
-                    },
-                    dateInput: {
-                      marginLeft: 36,
-                    },
-                  }}
-                  onDateChange={(event) => {
-                    this.setState({ end: event });
-                  }}
+              <View style={styles.formInputControl}>
+                <TextInput
+                  style={styles.formInputText}
+                  placeholder="Product name..."
+                  underlineColorAndroid="Green"
+                  onChange={(event) => setTitle(event.target.value)}
+                  value={title}
+                  autoCorrect={false}
+                  returnKeyType="next"
                 />
               </View>
-              <View style={[styles.formRow]}>
-                <View style={styles.formLabel}>
-                  <Text style={styles.labelText}></Text>
-                </View>
-                <View style={styles.formInputControl}>
-                  <TextInput
-                    style={styles.formInputText}
-                    placeholder="Image url..."
-                    underlineColorAndroid={"Green"}
-                    onChangeText={(event) => {
-                      this.setState({ imageUrl: event });
-                    }}
-                    value={this.state.imageUrl}
-                    autoCorrect={false}
-                    returnKeyType="next"
-                    ref="2"
-                  />
-                </View>
+            </View>
+            <View style={[styles.formRow]}>
+              <View style={styles.formLabel}>
+                <Text style={styles.labelText}></Text>
               </View>
-              {/* <TouchableHighlight
+              <View style={styles.formInputControl}>
+                <TextInput
+                  style={styles.formInputText}
+                  placeholder="Minimal price..."
+                  keyboardType="numeric"
+                  underlineColorAndroid={"Green"}
+                  onChange={(event) => setMinimumBid(event.target.value)}
+                  value={minimumBid}
+                  autoCorrect={false}
+                  returnKeyType="next"
+                />
+              </View>
+            </View>
+            <View style={[styles.formRow]}>
+              <View style={styles.formLabel}>
+                <Text style={styles.labelText}></Text>
+              </View>
+              <TextInput
+                style={styles.formInputText}
+                placeholder="End date..."
+                underlineColorAndroid={"Green"}
+                onChange={(event) => setEnd(event.target.value)}
+                value={end}
+                autoCorrect={false}
+                returnKeyType="next"
+              />
+              {/* <DatePicker
+                style={{ width: 200 }}
+                date="01-08-2020"
+                mode="date"
+                placeholder="select date"
+                format="DD-MM-YYYY"
+                minDate="01-08-2020"
+                maxDate="31-12-2020"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                customStyles={{
+                  dateIcon: {
+                    position: "absolute",
+                    left: 0,
+                    top: 4,
+                    marginLeft: 0,
+                  },
+                  dateInput: {
+                    marginLeft: 36,
+                  },
+                }}
+                onChange={(event) => setEnd(event.target.value)}
+              /> */}
+            </View>
+            <View style={[styles.formRow]}>
+              <View style={styles.formLabel}>
+                <Text style={styles.labelText}></Text>
+              </View>
+              <View style={styles.formInputControl}>
+                <TextInput
+                  style={styles.formInputText}
+                  placeholder="Image url..."
+                  underlineColorAndroid={"Green"}
+                  onChange={(event) => setImageUrl(event.target.value)}
+                  value={imageUrl}
+                  autoCorrect={false}
+                  returnKeyType="next"
+                />
+              </View>
+            </View>
+            {/* <TouchableHighlight
                 style={[styles.formButton]}
                 underlayColor="Green"
               >
@@ -154,49 +149,42 @@ class SetAuction extends React.Component {
                   </View>
                 </View>
               </TouchableHighlight> */}
-              <View style={[styles.formRow]}>
-                <View style={styles.formLabelDescription}>
-                  <Text style={styles.labelText}></Text>
-                </View>
-                <View style={styles.formInputControl}>
-                  <TextInput
-                    style={styles.formInputTextArea}
-                    multiline={true}
-                    placeholder="Description..."
-                    underlineColorAndroid="Green"
-                    onChangeText={(event) => {
-                      this.setState({ descriptor: event });
-                    }}
-                    value={this.state.descriptor}
-                    autoCorrect={false}
-                    returnKeyType="go"
-                    onSubmitEditing={(event) => {
-                      this.setState({ descriptor: event });
-                    }}
-                    numberOfLines={8}
-                  />
-                </View>
+            <View style={[styles.formRow]}>
+              <View style={styles.formLabelDescription}>
+                <Text style={styles.labelText}></Text>
               </View>
-
-              <View style={styles.formRowButtons}>
-                <TouchableHighlight
-                  style={styles.buttonTouch}
-                  onPress={() => {
-                    this.SubmitForm();
-                  }}
-                  underlayColor="Green"
-                >
-                  <View style={styles.button}>
-                    <Text style={styles.buttonText}>Sell product</Text>
-                  </View>
-                </TouchableHighlight>
+              <View style={styles.formInputControl}>
+                <TextInput
+                  style={styles.formInputTextArea}
+                  multiline={true}
+                  placeholder="Description..."
+                  underlineColorAndroid="Green"
+                  onChange={(event) => setDescriptor(event.target.value)}
+                  value={descriptor}
+                  autoCorrect={false}
+                  returnKeyType="go"
+                  onSubmitEditing={(event) => setDescriptor(event.target.value)}
+                  numberOfLines={8}
+                />
               </View>
             </View>
+
+            <View style={styles.formRowButtons}>
+              <TouchableHighlight
+                style={styles.buttonTouch}
+                onPress={SubmitForm}
+                underlayColor="Green"
+              >
+                <View style={styles.button}>
+                  <Text style={styles.buttonText}>Sell product</Text>
+                </View>
+              </TouchableHighlight>
+            </View>
           </View>
-        </ScrollView>
-      </View>
-    );
-  }
+        </View>
+      </ScrollView>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -264,5 +252,3 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
-
-export default SetAuction;
