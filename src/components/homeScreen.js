@@ -20,7 +20,7 @@ export default function StartPage({ navigation }) {
       <View style={{ alignItems: "center", flex: 1 }}>
         {auctionList.map((auction) => {
           return (
-            <View>
+            <View key={auction.id}>
               <Image
                 style={{ width: "100%", height: 200, resizeMode: "stretch" }}
                 source={{

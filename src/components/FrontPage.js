@@ -94,7 +94,7 @@ export default function List() {
     <View style={([styles.container], { paddingBottom: 53, paddingTop: 53 })}>
       <ScrollView>
         {auctionList.map((auction) => {
-          <View>
+          <View key={auction.id}>
             <Image
               style={{ width: 80, height: 80, borderRadius: 50 }}
               source={{ uri: auction.image }}

@@ -109,7 +109,7 @@ export default function Profile({ navigation }) {
           <br></br>
           {reviewsList.map((review) => {
             return (
-              <View>
+              <View key={review.id}>
                 <Text>{review.comment}</Text>
                 <Text>{JSON.stringify(user)}</Text>
               </View>
