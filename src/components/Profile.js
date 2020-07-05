@@ -15,7 +15,7 @@ import {
   NetInfo,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { selectUser } from "../../src/store/user/selector";
+import { selectUser, selectId } from "../../src/store/user/selector";
 
 export default function Profile({ navigation }) {
   const styles = StyleSheet.create({
@@ -87,13 +87,12 @@ export default function Profile({ navigation }) {
   const [userList, setUserList] = useState([]);
   const [reviewsList, setReviewsList] = useState([]);
   const user = useSelector(selectUser);
-  console.log("user", user);
 
   async function FetchUser() {
-    const response = await axios.get(`http://localhost:4000/user/1`);
+    const response = await axios.get(`http://localhost:4000/user/${user.id}`);
     setUserList(response.data);
     setReviewsList(response.data.reviews);
-    console.log(response.data.reviews);
+    console.log("reviews", response.data.reviews);
   }
 
   useEffect(() => {
@@ -107,11 +106,17 @@ export default function Profile({ navigation }) {
           <br></br>
           {userList.createdAt}
           <br></br>
+          <Text>Reviews</Text>
           {reviewsList.map((review) => {
             return (
               <View key={review.id}>
-                <Text>{review.comment}</Text>
-                <Text>{JSON.stringify(user)}</Text>
+                <Text>
+                  {"\n"}
+                  {review.comment}
+                  {"\n"}
+                  {review.rating}
+                  {"\n"}
+                </Text>
               </View>
             );
           })}

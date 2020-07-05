@@ -10,7 +10,6 @@ import {
   TextInput,
 } from "react-native";
 import { login } from "../store/user/actions";
-import { selectToken } from "../store/user/selector";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function SignIn({ navigation }) {
