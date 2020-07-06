@@ -66,7 +66,7 @@ export default function SetAuction() {
               <View style={styles.formInputControl}>
                 <TextInput
                   style={styles.formInputText}
-                  placeholder="Minimal price..."
+                  placeholder="Minimum price..."
                   keyboardType="numeric"
                   underlineColorAndroid={"Green"}
                   onChange={(event) => setMinimumBid(event.target.value)}

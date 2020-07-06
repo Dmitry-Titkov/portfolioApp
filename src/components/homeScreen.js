@@ -28,9 +28,11 @@ export default function StartPage({ navigation, route }) {
                   uri: auction.image,
                 }}
               />
-              <Text>{auction.id}</Text>
+              <Text>{auction.name}</Text>
 
-              <Text>Price</Text>
+              <Text>
+                Bids{"\n"} {auction.bids.length}
+              </Text>
               <Button
                 title="Details"
                 onPress={() =>
