@@ -7,12 +7,7 @@ import {
   ScrollView,
   Text,
   View,
-  StatusBar,
-  TextInput,
-  FlatList,
-  Image,
   AsyncStorage,
-  NetInfo,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../src/store/user/selector";
@@ -106,7 +101,7 @@ export default function Profile({ navigation }) {
           <br></br>
           {userList.createdAt}
           <br></br>
-          <Text>Reviews</Text>
+          <Text>Your reviews</Text>
           {reviewsList.map((review) => {
             return (
               <View key={review.id}>
@@ -125,7 +120,11 @@ export default function Profile({ navigation }) {
           <TouchableHighlight
             style={styles.buttonTouch}
             underlayColor="Green"
-            onPress={AsyncStorage.clear()}
+            onPress={() => {
+              AsyncStorage.clear();
+              navigation.navigate("Home");
+              window.location.reload(false);
+            }}
           >
             <View style={styles.button}>
               <Text style={styles.buttonText}>Log out</Text>

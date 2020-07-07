@@ -35,7 +35,11 @@ export default function SetAuction() {
 
     var header = { headers: { Authorization: `Bearer ${user.token}` } };
 
-    axios.post(`http://localhost:4000/auctions/1/create`, data, header);
+    axios.post(
+      `http://localhost:4000/auctions/${user.id}/create`,
+      data,
+      header
+    );
   }
 
   return (
@@ -84,7 +88,6 @@ export default function SetAuction() {
                 <TextInput
                   style={styles.formInputText}
                   placeholder="End date..."
-                  keyboardType="numeric"
                   underlineColorAndroid={"Green"}
                   onChange={(event) => setEnd(event.target.value)}
                   value={end}

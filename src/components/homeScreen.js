@@ -2,6 +2,7 @@ import React from "react";
 import { Text, View, Image, Button, StyleSheet } from "react-native";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { SearchBar } from "react-native-elements";
 
 export default function StartPage({ navigation, route }) {
   const [auctionList, setAuctionList] = useState([]);
@@ -14,6 +15,9 @@ export default function StartPage({ navigation, route }) {
   useEffect(() => {
     FetchAuctionList();
   }, []);
+  auctionList.sort(function (a, b) {
+    return b.bids.length - a.bids.length;
+  });
 
   return (
     <View>

@@ -15,13 +15,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../src/store/user/selector";
 export default function DetailPage({ navigation, route }) {
   const styles = StyleSheet.create({
-    formRowButtons: {
-      marginLeft: 30,
-      marginTop: 30,
-      marginRight: 30,
-      padding: 1,
-      borderRadius: 4,
-      justifyContent: "center",
+    container: {
+      marginTop: 53,
+      backgroundColor: "#fff",
+      flex: 1,
+    },
+    body: {
+      flex: 1,
+      flexDirection: "column",
+      justifyContent: "flex-start",
+    },
+    loginForm: {
+      marginTop: 60,
     },
     formRow: {
       flexDirection: "row",
@@ -33,17 +38,23 @@ export default function DetailPage({ navigation, route }) {
       padding: 1,
       borderRadius: 4,
     },
-    formInputControl: {
-      flex: 10,
+    formLabel: {
+      backgroundColor: "#fff",
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
     },
-    formInputText: {
-      backgroundColor: "white",
-      marginTop: 60,
-      paddingBottom: 10,
-      borderColor: "cadetblue",
+    labelText: {
+      color: "#f15a24",
     },
-    formInputControl: {
-      flex: 10,
+
+    formRowButtons: {
+      marginLeft: 30,
+      marginTop: 30,
+      marginRight: 30,
+      padding: 1,
+      borderRadius: 4,
+      justifyContent: "center",
     },
     button: {
       backgroundColor: "cadetblue",
@@ -58,9 +69,11 @@ export default function DetailPage({ navigation, route }) {
     buttonText: {
       color: "black",
     },
-
-    container: {
-      flex: 1,
+    buttonTouch: {
+      borderRadius: 4,
+    },
+    status: {
+      justifyContent: "center",
       alignItems: "center",
     },
   });
@@ -130,7 +143,9 @@ export default function DetailPage({ navigation, route }) {
       <ScrollView>
         <View style={styles.body}>
           <View style={styles.form}>
-            <Text>{auctionList.name}</Text>
+            <View style={styles.formLabel}>
+              <Text style={styles.labelText}>{auctionList.name}</Text>
+            </View>
             <View>
               <Image
                 style={{ width: "100%", height: 200, resizeMode: "stretch" }}
@@ -139,14 +154,14 @@ export default function DetailPage({ navigation, route }) {
                 }}
               />
 
-              <Text>
+              <Text style={{ textAlign: "center" }}>
                 Description {"\n"} {auctionList.description}
               </Text>
-              <Text>Bids</Text>
+              <Text style={{ textAlign: "center" }}>Bids</Text>
               {placedBids.map((bids) => {
                 return (
                   <View key={bids.id}>
-                    <Text>{bids.amount}</Text>
+                    <Text style={{ textAlign: "center" }}>{bids.amount}</Text>
                   </View>
                 );
               })}
@@ -165,7 +180,7 @@ export default function DetailPage({ navigation, route }) {
               {placeReview.map((reviews) => {
                 return (
                   <View key={reviews.id}>
-                    <Text>
+                    <Text style={{ textAlign: "center" }}>
                       Rating {reviews.rating}
                       {"\n"}
                       comment
@@ -177,10 +192,10 @@ export default function DetailPage({ navigation, route }) {
               })}
 
               <View style={styles.container}>
-                <Text>Leave a review</Text>
+                <Text style={{ textAlign: "center" }}>Leaxve a rating</Text>
                 <Picker
                   selectedValue={selectedStars}
-                  style={{ height: 50, width: 150 }}
+                  style={{ height: 50, width: 150, alignSelf: "center" }}
                   onValueChange={(itemValue, itemIndex) =>
                     setSelectedStars(itemValue)
                   }
@@ -192,7 +207,7 @@ export default function DetailPage({ navigation, route }) {
                   <Picker.Item label="5" value="5" />
                 </Picker>
               </View>
-
+              <Text style={{ textAlign: "center" }}>Leave a review</Text>
               <View style={[styles.formRow]}>
                 <View style={styles.formInputControl}>
                   <TextInput
