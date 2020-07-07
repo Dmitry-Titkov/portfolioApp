@@ -18,7 +18,7 @@ export default function SiteApp() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Action App" component={loginLogoutControls} />
+        <Stack.Screen name="Auction App" component={loginLogoutControls} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Details" component={DetailsPage} />
       </Stack.Navigator>

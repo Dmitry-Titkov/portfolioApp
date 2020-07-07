@@ -9,7 +9,6 @@ export default function StartPage({ navigation, route }) {
   async function FetchAuctionList() {
     const response = await axios.get(`http://localhost:4000`);
     setAuctionList(response.data);
-    console.log("0", response.data[0]);
   }
 
   useEffect(() => {
@@ -18,7 +17,7 @@ export default function StartPage({ navigation, route }) {
 
   return (
     <View>
-      <View style={{ alignItems: "center", flex: 1 }}>
+      <View style={{ flex: 1 }}>
         {auctionList.map((auction) => {
           return (
             <View key={auction.id}>

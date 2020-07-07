@@ -73,7 +73,7 @@ export default function SignIn({ navigation }) {
               <View style={styles.formRowButtons}>
                 <TouchableHighlight
                   style={styles.buttonTouch}
-                  onPress={() => this.props.navigation.navigate("Register")}
+                  onPress={() => navigation.navigate("Register")}
                   alert
                 >
                   <View style={styles.button}>

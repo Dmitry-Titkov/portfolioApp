@@ -80,39 +80,20 @@ export default function SetAuction() {
               <View style={styles.formLabel}>
                 <Text style={styles.labelText}></Text>
               </View>
-              <TextInput
-                style={styles.formInputText}
-                placeholder="End date..."
-                underlineColorAndroid={"Green"}
-                onChange={(event) => setEnd(event.target.value)}
-                value={end}
-                autoCorrect={false}
-                returnKeyType="next"
-              />
-              {/* <DatePicker
-                style={{ width: 200 }}
-                date="01-08-2020"
-                mode="date"
-                placeholder="select date"
-                format="DD-MM-YYYY"
-                minDate="01-08-2020"
-                maxDate="31-12-2020"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                customStyles={{
-                  dateIcon: {
-                    position: "absolute",
-                    left: 0,
-                    top: 4,
-                    marginLeft: 0,
-                  },
-                  dateInput: {
-                    marginLeft: 36,
-                  },
-                }}
-                onChange={(event) => setEnd(event.target.value)}
-              /> */}
+              <View style={styles.formInputControl}>
+                <TextInput
+                  style={styles.formInputText}
+                  placeholder="End date..."
+                  keyboardType="numeric"
+                  underlineColorAndroid={"Green"}
+                  onChange={(event) => setEnd(event.target.value)}
+                  value={end}
+                  autoCorrect={false}
+                  returnKeyType="next"
+                />
+              </View>
             </View>
+
             <View style={[styles.formRow]}>
               <View style={styles.formLabel}>
                 <Text style={styles.labelText}></Text>
@@ -129,6 +110,15 @@ export default function SetAuction() {
                 />
               </View>
             </View>
+            <View style={styles.formLabel}>
+              <Text style={styles.labelText}>Image preview</Text>
+            </View>
+            <Image
+              style={{ width: "100%", height: 200, resizeMode: "stretch" }}
+              source={{
+                uri: imageUrl,
+              }}
+            />
             {/* <TouchableHighlight
                 style={[styles.formButton]}
                 underlayColor="Green"
@@ -150,9 +140,6 @@ export default function SetAuction() {
                 </View>
               </TouchableHighlight> */}
             <View style={[styles.formRow]}>
-              <View style={styles.formLabelDescription}>
-                <Text style={styles.labelText}></Text>
-              </View>
               <View style={styles.formInputControl}>
                 <TextInput
                   style={styles.formInputTextArea}

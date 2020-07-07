@@ -121,6 +121,17 @@ export default function Profile({ navigation }) {
             );
           })}
         </Text>
+        <View style={styles.formRowButtons}>
+          <TouchableHighlight
+            style={styles.buttonTouch}
+            underlayColor="Green"
+            onPress={AsyncStorage.clear()}
+          >
+            <View style={styles.button}>
+              <Text style={styles.buttonText}>Log out</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
       </ScrollView>
     </View>
   );
