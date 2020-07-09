@@ -67,6 +67,7 @@ export const login = (email, password) => {
     } catch (error) {
       if (error.response) {
         console.log(error.response.data.message);
+        window.alert(error.response.data.message);
         dispatch(setMessage("danger", true, error.response.data.message));
       } else {
         console.log(error.message);

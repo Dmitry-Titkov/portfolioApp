@@ -1,7 +1,7 @@
 import * as React from "react";
-import HomeScreen from "./homeScreen";
+import HomeScreen from "./homeScreenLoggedOut";
 import SignIn from "./Login";
-import Search from "./Search";
+import Search from "./SearchLoggedOut";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
 export default function Navigatiion() {

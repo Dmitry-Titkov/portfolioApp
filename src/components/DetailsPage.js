@@ -25,14 +25,16 @@ export default function DetailPage({ navigation, route }) {
       flexDirection: "column",
       justifyContent: "flex-start",
     },
+    borderLine: {
+      borderWidth: 4,
+      borderColor: "#20232a",
+      borderRadius: 6,
+    },
     loginForm: {
       marginTop: 60,
     },
     formRow: {
       flexDirection: "row",
-      marginLeft: 30,
-      marginTop: 30,
-      marginRight: 30,
       borderWidth: StyleSheet.hairlineWidth,
       borderColor: "cadetblue",
       padding: 1,
@@ -47,7 +49,9 @@ export default function DetailPage({ navigation, route }) {
     labelText: {
       color: "#f15a24",
     },
-
+    formInputControl: {
+      flex: 10,
+    },
     formRowButtons: {
       marginLeft: 30,
       marginTop: 30,
@@ -77,6 +81,7 @@ export default function DetailPage({ navigation, route }) {
       alignItems: "center",
     },
   });
+
   const auctionId = route.params?.auctionId ?? "2";
   const fetchItem = auctionId - 1;
   const [auctionList, setAuctionList] = useState([]);
@@ -103,26 +108,31 @@ export default function DetailPage({ navigation, route }) {
     FetchReviews();
   }, []);
   function PlaceBid() {
-    var data = {
-      chosenAuctionId: auctionList.id,
-      newAmount: bidByUser,
-      userId: user.id,
-    };
+    if (bidByUser < placedBids[placedBids.length - 1]) {
+      var data = {
+        chosenAuctionId: auctionList.id,
+        newAmount: bidByUser,
+        userId: user.id,
+      };
 
-    var header = { headers: { Authorization: `Bearer ${user.token}` } };
+      var header = { headers: { Authorization: `Bearer ${user.token}` } };
 
-    axios.post(
-      `http://localhost:4000/auctions/${auctionList.id}/bid`,
-      data,
-      header
-    );
+      axios.post(
+        `http://localhost:4000/auctions/${auctionList.id}/bid`,
+        data,
+        header
+      );
+    } else {
+      window.alert("There's no point bidding less then the highest bid");
+    }
   }
 
   function PlaceReview() {
     var data = {
-      chosenAuctionId: auctionList.id,
-      comment: reviewByUser,
+      auctionId: auctionList.id,
+
       rating: selectedStars,
+      comment: reviewByUser,
       userId: user.id,
     };
 
@@ -150,37 +160,50 @@ export default function DetailPage({ navigation, route }) {
                   uri: auctionList.image,
                 }}
               />
-
-              <Text style={{ textAlign: "center" }}>
-                Description {"\n"} {auctionList.description}
-              </Text>
-              <Text style={{ textAlign: "center" }}>Bids</Text>
-              {placedBids.map((bids) => {
-                return (
-                  <View key={bids.id}>
-                    <Text style={{ textAlign: "center" }}>{bids.amount}</Text>
-                  </View>
-                );
-              })}
-              <View style={styles.formInputControl}>
-                <TextInput
-                  style={styles.formInputText}
-                  keyboardType="numeric"
-                  underlineColorAndroid={"Green"}
-                  onChange={(event) => setBidByUser(event.target.value)}
-                  value={bidByUser}
-                  autoCorrect={false}
-                  returnKeyType="next"
-                />
+              <View style={styles.borderLine}>
+                <Text style={{ textAlign: "center" }}>
+                  Description {"\n"} {auctionList.description}
+                </Text>
               </View>
-              <Button title="Place bid" onPress={PlaceBid} />
+              <View style={styles.borderLine}>
+                <Text style={{ textAlign: "center" }}>Bids</Text>
+                {placedBids.map((bids) => {
+                  return (
+                    <View key={bids.id}>
+                      <Text style={{ textAlign: "center" }}>{bids.amount}</Text>
+                    </View>
+                  );
+                })}
+              </View>
+              <View style={[styles.formRow]}>
+                <View style={styles.formInputControl}>
+                  <TextInput
+                    style={(styles.formInputText, { padding: 15 })}
+                    keyboardType="numeric"
+                    placeholder="Place a bid..."
+                    underlineColorAndroid={"Green"}
+                    onChange={(event) => setBidByUser(event.target.value)}
+                    value={bidByUser}
+                    autoCorrect={false}
+                    returnKeyType="next"
+                  />
+                </View>
+              </View>
+              <Button
+                title="Place bid"
+                onPress={() => {
+                  PlaceBid();
+                  window.location.reload(false);
+                }}
+              />
+              <Text style={{ fontSize: 20, textAlign: "center" }}>Reviews</Text>
+
               {placeReview.map((reviews) => {
                 return (
-                  <View key={reviews.id}>
+                  <View key={reviews.id} style={styles.borderLine}>
                     <Text style={{ textAlign: "center" }}>
-                      Rating {reviews.rating}
                       {"\n"}
-                      comment
+                      Rating: {reviews.rating}
                       {"\n"}
                       {reviews.comment}
                     </Text>
@@ -189,7 +212,7 @@ export default function DetailPage({ navigation, route }) {
               })}
 
               <View style={styles.container}>
-                <Text style={{ textAlign: "center" }}>Leaxve a rating</Text>
+                <Text style={{ textAlign: "center" }}>Give a rating</Text>
                 <Picker
                   selectedValue={selectedStars}
                   style={{ height: 50, width: 150, alignSelf: "center" }}
@@ -204,7 +227,7 @@ export default function DetailPage({ navigation, route }) {
                   <Picker.Item label="5" value="5" />
                 </Picker>
               </View>
-              <Text style={{ textAlign: "center" }}>Leave a review</Text>
+              <Text style={{ textAlign: "center" }}>Give a review</Text>
               <View style={[styles.formRow]}>
                 <View style={styles.formInputControl}>
                   <TextInput
@@ -219,7 +242,13 @@ export default function DetailPage({ navigation, route }) {
                   />
                 </View>
               </View>
-              <Button title="Leave review" onPress={PlaceReview} />
+              <Button
+                title="Leave review"
+                onPress={() => {
+                  PlaceReview();
+                  window.location.reload(false);
+                }}
+              />
             </View>
           </View>
         </View>
