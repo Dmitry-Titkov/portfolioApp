@@ -1,10 +1,17 @@
 import React from "react";
-import { Text, View, Image, Button, StyleSheet } from "react-native";
+import {
+  Text,
+  TextInput,
+  View,
+  Image,
+  Button,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { SearchBar } from "react-native-elements";
 
-export default function Search() {
+export default function Search({ navigation }) {
   const [userInput, setUserInput] = useState("");
   const [searchResult, setSearchResult] = useState("");
 
@@ -17,67 +24,158 @@ export default function Search() {
   }
   if (searchResult === "") {
     return (
-      <View>
-        <SearchBar
-          placeholder="Type Here..."
-          onChange={(event) => {
-            console.log("event", event.target?.value ?? "");
-            setUserInput(event.target?.value ?? "");
-          }}
-          value={userInput}
-          onSubmitEditing={(_) => fetchName(userInput)}
-        />
-
-        <Button onPress={fetchName(userInput)}> Search</Button>
-        <Text>Please fill in the search bar</Text>
+      <View style={styles.container}>
+        <ScrollView>
+          <View style={styles.body}>
+            <View style={styles.form}>
+              <View style={[styles.formRow]}>
+                <View style={styles.formLabel}>
+                  <Text style={styles.labelText}></Text>
+                </View>
+                <View style={styles.formInputControl}>
+                  <TextInput
+                    style={styles.formInputText}
+                    placeholder="Search..."
+                    underlineColorAndroid="Green"
+                    onChange={(event) => setUserInput(event.target.value)}
+                    value={userInput}
+                    autoCorrect={false}
+                    returnKeyType="next"
+                    onSubmitEditing={(_) => fetchName(userInput)}
+                  />
+                </View>
+              </View>
+            </View>
+            <Text
+              style={{
+                fontSize: 20,
+                textAlign: "center",
+              }}
+            >
+              Please fill in the searchbar
+            </Text>
+          </View>
+        </ScrollView>
       </View>
     );
   } else {
     return (
-      <View>
-        <SearchBar
-          placeholder="Type Here..."
-          onChangeText={(event) => {
-            console.log("event", event.target?.value ?? "");
-            setUserInput(event.target?.value ?? "");
-          }}
-          value={userInput}
-          onSubmitEditing={(_) => fetchName(userInput)}
-        />
-
-        <View style={{ flex: 1 }}>
-          {searchResult.map((auction) => {
-            return (
-              <View key={auction.id}>
-                <Image
-                  style={{ width: "100%", height: 200, resizeMode: "stretch" }}
-                  source={{
-                    uri: auction.image,
-                  }}
-                />
-                <Text>{auction.name}</Text>
-
-                <Text>
-                  Bids{"\n"} {auction.bids.length}
-                </Text>
-                <Button
-                  title="Details"
-                  onPress={() =>
-                    navigation.navigate("Details", {
-                      auctionId: auction.id,
-                    })
-                  }
-                />
+      <View style={styles.container}>
+        <ScrollView>
+          <View style={styles.body}>
+            <View style={styles.form}>
+              <View style={[styles.formRow]}>
+                <View style={styles.formLabel}>
+                  <Text style={styles.labelText}></Text>
+                </View>
+                <View style={styles.formInputControl}>
+                  <TextInput
+                    style={styles.formInputText}
+                    placeholder="Search..."
+                    underlineColorAndroid="Green"
+                    onChange={(event) => setUserInput(event.target.value)}
+                    value={userInput}
+                    autoCorrect={false}
+                    returnKeyType="next"
+                    onSubmitEditing={(_) => fetchName(userInput)}
+                  />
+                </View>
               </View>
-            );
-          })}
-        </View>
+            </View>
+            <View style={{ flex: 1 }}>
+              {searchResult.map((auction) => {
+                return (
+                  <View key={auction.id}>
+                    <Text style={{ fontSize: 20, textAlign: "center" }}>
+                      {auction.name}
+                      {"\n"}
+                    </Text>
+                    <Image
+                      style={{
+                        width: "100%",
+                        height: 200,
+                        resizeMode: "stretch",
+                      }}
+                      source={{
+                        uri: auction.image,
+                      }}
+                    />
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        textAlign: "center",
+                        marginTop: 30,
+                        marginBottom: 20,
+                      }}
+                    >
+                      Bids placed: {auction.bids.length}
+                    </Text>
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        textAlign: "center",
+                        marginTop: 10,
+                        marginBottom: 20,
+                      }}
+                    >
+                      Auction end: {auction.date_end.substring(0, 10)}
+                    </Text>
+                    <Button
+                      title="Details"
+                      style={{ marginTop: 30, marginBot: 30 }}
+                      onPress={() =>
+                        navigation.navigate("Details", {
+                          auctionId: auction.id,
+                        })
+                      }
+                    />
+                  </View>
+                );
+              })}
+            </View>
+          </View>
+        </ScrollView>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 53,
+    backgroundColor: "#fff",
+    flex: 1,
+  },
+  body: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "flex-start",
+  },
+  loginForm: {
+    marginTop: 60,
+  },
+  formRow: {
+    flexDirection: "row",
+    marginLeft: 30,
+    marginTop: 30,
+    marginRight: 30,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: "cadetblue",
+    padding: 1,
+    borderRadius: 4,
+  },
+  formLabel: {
+    backgroundColor: "#fff",
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  labelText: {
+    color: "#f15a24",
+  },
+  formInputControl: {
+    flex: 10,
+  },
   formRowButtons: {
     marginLeft: 30,
     marginTop: 30,
@@ -98,5 +196,12 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "black",
+  },
+  buttonTouch: {
+    borderRadius: 4,
+  },
+  status: {
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

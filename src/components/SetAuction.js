@@ -12,13 +12,13 @@ import {
   Image,
   Button,
 } from "react-native";
-import DatePicker from "react-native-datepicker";
+
 import { selectUser } from "../store/user/selector";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function SetAuction() {
   const [title, setTitle] = useState("");
-  const [minimumBid, setMinimumBid] = useState("");
+  const [minBid, setMinBid] = useState("");
   const [descriptor, setDescriptor] = useState("");
   const [end, setEnd] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -27,7 +27,7 @@ export default function SetAuction() {
   function SubmitForm() {
     var data = {
       name: title,
-      minimumBid: minimumBid,
+      minimumBid: minBid,
       date_end: end,
       description: descriptor,
       image: imageUrl,
@@ -40,6 +40,34 @@ export default function SetAuction() {
       data,
       header
     );
+  }
+  const regEx = /^\d{4}-\d{2}-\d{2}$/;
+  const today = new Date();
+  console.log("Date", new Date(end).getTime());
+
+  function validationForm() {
+    if (
+      title === "" ||
+      minBid === "" ||
+      end === "" ||
+      descriptor === "" ||
+      imageUrl === ""
+    ) {
+      window.alert("All fields must be filled in");
+      console.log(title, minBid, end, descriptor, imageUrl);
+    } else {
+      if (!end.match(regEx)) {
+        window.alert(
+          "Please enter the date in the following format YYYY-MM-DD"
+        );
+      } else {
+        if (today.getTime() > new Date(end).getTime()) {
+          window.alert("It's impossible to make an auction in the past");
+        } else {
+          SubmitForm();
+        }
+      }
+    }
   }
 
   return (
@@ -73,8 +101,8 @@ export default function SetAuction() {
                   placeholder="Minimum price..."
                   keyboardType="numeric"
                   underlineColorAndroid={"Green"}
-                  onChange={(event) => setMinimumBid(event.target.value)}
-                  value={minimumBid}
+                  onChange={(event) => setMinBid(event.target.value)}
+                  value={minBid}
                   autoCorrect={false}
                   returnKeyType="next"
                 />
@@ -162,7 +190,7 @@ export default function SetAuction() {
             <View style={styles.formRowButtons}>
               <TouchableHighlight
                 style={styles.buttonTouch}
-                onPress={SubmitForm}
+                onPress={validationForm}
                 underlayColor="Green"
               >
                 <View style={styles.button}>

@@ -1,26 +1,64 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   TouchableHighlight,
   ScrollView,
   Text,
   View,
-  Alert,
   TextInput,
 } from "react-native";
 import { signUp } from "../store/user/actions";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import axios from "axios";
 
 export default function Rgister({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repassword, setrePassword] = useState("");
   const [displayName, setDisplayName] = useState("");
+  const [userList, setUserList] = useState("");
 
   const dispatch = useDispatch();
 
+  async function FetchUserList() {
+    const response = await axios.get(`http://localhost:4000/user`);
+    setUserList(response.data);
+  }
+
   function SubmitForm() {
     dispatch(signUp(displayName, email, password));
+    navigation.navigate("Login");
+  }
+  useEffect(() => {
+    FetchUserList();
+  }, []);
+  function validationForm() {
+    if (
+      email === "" ||
+      password === "" ||
+      repassword === "" ||
+      displayName === ""
+    ) {
+      window.alert("All fields must be filled in");
+    } else {
+      if (password.length < 8) {
+        window.alert("Minimum length for password is 8");
+      } else {
+        if (password != repassword) {
+          window.alert("Both passwords have to be identical");
+        } else {
+          if (userList.find((user) => user.display_name === displayName)) {
+            window.alert("This display name is already taken");
+          } else {
+            if (userList.find((mail) => mail.email === email)) {
+              window.alert("User with this email already exists");
+            } else {
+              SubmitForm();
+            }
+          }
+        }
+      }
+    }
   }
 
   return (
@@ -101,8 +139,7 @@ export default function Rgister({ navigation }) {
               <View style={styles.formRowButtons}>
                 <TouchableHighlight
                   onPress={() => {
-                    SubmitForm();
-                    navigation.navigate("Login");
+                    validationForm();
                   }}
                 >
                   <View style={styles.button}>

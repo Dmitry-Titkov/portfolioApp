@@ -6,7 +6,7 @@ import {
   appDoneLoading,
   showMessageWithTimeout,
   setMessage,
-} from "../appState/actions";
+} from "../AppState/Actions";
 
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const TOKEN_STILL_VALID = "TOKEN_STILL_VALID";

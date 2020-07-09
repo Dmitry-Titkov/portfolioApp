@@ -3,7 +3,7 @@ import {
   APP_DONE_LOADING,
   SET_MESSAGE,
   CLEAR_MESSAGE,
-} from "./actions";
+} from "./Actions";
 
 const initialState = {
   loading: false,
