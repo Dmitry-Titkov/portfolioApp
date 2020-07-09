@@ -6,11 +6,10 @@ import {
   ScrollView,
   Text,
   View,
-  StatusBar,
   TextInput,
 } from "react-native";
 import { login } from "../store/user/actions";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export default function SignIn({ navigation }) {
   const [email, setEmail] = useState("");
@@ -21,7 +20,6 @@ export default function SignIn({ navigation }) {
   async function FetchUserList() {
     const response = await axios.get(`http://localhost:4000/user`);
     setUserList(response.data);
-    console.log(response.data[0].email);
   }
 
   useEffect(() => {

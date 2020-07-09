@@ -9,7 +9,7 @@ import {
   ScrollView,
 } from "react-native";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 export default function Search({ navigation }) {
   const [userInput, setUserInput] = useState("");
@@ -19,7 +19,6 @@ export default function Search({ navigation }) {
     const response = await axios.get(
       `http://localhost:4000/search/${userInput}`
     );
-    console.log("Search", response.data);
     setSearchResult(response.data);
   }
   if (searchResult === "") {

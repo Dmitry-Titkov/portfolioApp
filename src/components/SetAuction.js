@@ -6,15 +6,12 @@ import {
   ScrollView,
   Text,
   View,
-  StatusBar,
   TextInput,
-  TouchableWithoutFeedback,
   Image,
-  Button,
 } from "react-native";
 
 import { selectUser } from "../store/user/selector";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 export default function SetAuction() {
   const [title, setTitle] = useState("");
@@ -43,7 +40,6 @@ export default function SetAuction() {
   }
   const regEx = /^\d{4}-\d{2}-\d{2}$/;
   const today = new Date();
-  console.log("Date", new Date(end).getTime());
 
   function validationForm() {
     if (
@@ -54,7 +50,6 @@ export default function SetAuction() {
       imageUrl === ""
     ) {
       window.alert("All fields must be filled in");
-      console.log(title, minBid, end, descriptor, imageUrl);
     } else {
       if (!end.match(regEx)) {
         window.alert(
@@ -150,26 +145,6 @@ export default function SetAuction() {
                 uri: imageUrl,
               }}
             />
-            {/* <TouchableHighlight
-                style={[styles.formButton]}
-                underlayColor="Green"
-              >
-                <View>
-                  <View style={styles.formRowButtons}>
-                    <TouchableHighlight
-                      style={styles.buttonTouch}
-                      onPress={(event) => {
-                        this.setState({ imageUrl: event });
-                      }}
-                      underlayColor="blue"
-                    >
-                      <View style={styles.button}>
-                        <Text style={styles.buttonText}>add a photo</Text>
-                      </View>
-                    </TouchableHighlight>
-                  </View>
-                </View>
-              </TouchableHighlight> */}
             <View style={[styles.formRow]}>
               <View style={styles.formInputControl}>
                 <TextInput

@@ -9,7 +9,7 @@ import {
   View,
   AsyncStorage,
 } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectUser } from "../../src/store/user/selector";
 
 export default function Profile({ navigation }) {
@@ -87,7 +87,6 @@ export default function Profile({ navigation }) {
     const response = await axios.get(`http://localhost:4000/user/${user.id}`);
     setUserList(response.data);
     setReviewsList(response.data.reviews);
-    console.log("reviews", response.data);
   }
 
   useEffect(() => {

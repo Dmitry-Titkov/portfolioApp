@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectUser } from "../../src/store/user/selector";
 export default function DetailPage({ navigation, route }) {
   const styles = StyleSheet.create({
@@ -91,14 +91,11 @@ export default function DetailPage({ navigation, route }) {
     const response = await axios.get(`http://localhost:4000`);
     setAuctionList(response.data[fetchItem]);
     setPlacedBids(response.data[fetchItem].bids);
-
-    console.log("fetch item", response.data[fetchItem]);
   }
 
   async function FetchReviews() {
     const responseReviews = await axios.get(`http://localhost:4000/review`);
     setPlaceReview(responseReviews.data[fetchItem].reviews);
-    console.log("fetch item", responseReviews.data[fetchItem].reviews);
   }
 
   useEffect(() => {
