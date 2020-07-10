@@ -3,7 +3,7 @@ import { Text, View, Image, Button, StyleSheet } from "react-native";
 import axios from "axios";
 import { useState, useEffect } from "react";
 
-export default function StartPage({ navigation }) {
+export default function StartPage({ navigation, route }) {
   const [auctionList, setAuctionList] = useState([]);
 
   async function FetchAuctionList() {
@@ -17,7 +17,7 @@ export default function StartPage({ navigation }) {
 
   return (
     <View>
-      <View style={{ alignItems: "center", flex: 1 }}>
+      <View style={{ flex: 1 }}>
         {auctionList.map((auction) => {
           return (
             <View key={auction.id}>
@@ -27,12 +27,18 @@ export default function StartPage({ navigation }) {
                   uri: auction.image,
                 }}
               />
-              <Text>{auction.id}</Text>
+              <Text>{auction.name}</Text>
 
-              <Text>Price</Text>
+              <Text>
+                Bids{"\n"} {auction.bids.length}
+              </Text>
               <Button
                 title="Details"
-                onPress={() => navigation.navigate("Details")}
+                onPress={() =>
+                  navigation.navigate("Details", {
+                    auctionId: auction.id,
+                  })
+                }
               />
             </View>
           );

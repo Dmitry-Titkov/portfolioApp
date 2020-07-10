@@ -10,7 +10,6 @@ import {
   TextInput,
 } from "react-native";
 import { login } from "../store/user/actions";
-import { selectToken } from "../store/user/selector";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function SignIn({ navigation }) {
@@ -74,7 +73,7 @@ export default function SignIn({ navigation }) {
               <View style={styles.formRowButtons}>
                 <TouchableHighlight
                   style={styles.buttonTouch}
-                  onPress={() => this.props.navigation.navigate("Register")}
+                  onPress={() => navigation.navigate("Register")}
                   alert
                 >
                   <View style={styles.button}>
