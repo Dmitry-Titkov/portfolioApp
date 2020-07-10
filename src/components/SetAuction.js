@@ -9,6 +9,7 @@ import {
   TextInput,
   Image,
 } from "react-native";
+import { apiUrl } from "../config/constants";
 
 import { selectUser } from "../store/user/selector";
 import { useSelector } from "react-redux";
@@ -32,11 +33,7 @@ export default function SetAuction() {
 
     var header = { headers: { Authorization: `Bearer ${user.token}` } };
 
-    axios.post(
-      `http://localhost:4000/auctions/${user.id}/create`,
-      data,
-      header
-    );
+    axios.post(`${apiUrl}/auctions/${user.id}/create`, data, header);
   }
   const regEx = /^\d{4}-\d{2}-\d{2}$/;
   const today = new Date();

@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../src/store/user/selector";
+import { apiUrl } from "../config/constants";
 
 export default function Profile({ navigation }) {
   const styles = StyleSheet.create({
@@ -82,7 +83,7 @@ export default function Profile({ navigation }) {
   const user = useSelector(selectUser);
 
   async function FetchUser() {
-    const response = await axios.get(`http://localhost:4000/user/${user.id}`);
+    const response = await axios.get(`${apiUrl}/user/${user.id}`);
     setUserList(response.data);
     setBidlist(response.data.bids);
     setAuctionList(response.data.auctions);

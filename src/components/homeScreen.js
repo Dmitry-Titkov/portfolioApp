@@ -2,12 +2,13 @@ import React from "react";
 import { Text, View, Image, Button, StyleSheet } from "react-native";
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { apiUrl } from "../config/constants";
 
 export default function StartPage({ navigation, route }) {
   const [auctionList, setAuctionList] = useState([]);
 
   async function FetchAuctionList() {
-    const response = await axios.get(`http://localhost:4000`);
+    const response = await axios.get(`${apiUrl}`);
     setAuctionList(response.data);
   }
 

@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { login } from "../store/user/actions";
 import { useDispatch } from "react-redux";
+import { apiUrl } from "../config/constants";
 
 export default function SignIn({ navigation }) {
   const [email, setEmail] = useState("");
@@ -18,7 +19,7 @@ export default function SignIn({ navigation }) {
   const dispatch = useDispatch();
 
   async function FetchUserList() {
-    const response = await axios.get(`http://localhost:4000/user`);
+    const response = await axios.get(`${apiUrl}/user`);
     setUserList(response.data);
   }
 

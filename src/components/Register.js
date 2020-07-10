@@ -10,6 +10,7 @@ import {
 import { signUp } from "../store/user/actions";
 import { useDispatch } from "react-redux";
 import axios from "axios";
+import { apiUrl } from "../config/constants";
 
 export default function Rgister({ navigation }) {
   const [email, setEmail] = useState("");
@@ -21,7 +22,7 @@ export default function Rgister({ navigation }) {
   const dispatch = useDispatch();
 
   async function FetchUserList() {
-    const response = await axios.get(`http://localhost:4000/user`);
+    const response = await axios.get(`${apiUrl}/user`);
     setUserList(response.data);
   }
 
