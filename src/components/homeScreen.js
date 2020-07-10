@@ -1,23 +1,42 @@
 import React from "react";
 import { Text, View, Image, Button, StyleSheet } from "react-native";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 export default function StartPage({ navigation }) {
+  const [auctionList, setAuctionList] = useState([]);
+
+  async function FetchAuctionList() {
+    const response = await axios.get(`http://localhost:4000`);
+    setAuctionList(response.data);
+  }
+
+  useEffect(() => {
+    FetchAuctionList();
+  }, []);
+
   return (
     <View>
       <View style={{ alignItems: "center", flex: 1 }}>
-        <Image
-          style={{ width: "100%", height: 200, resizeMode: "stretch" }}
-          source={{
-            uri:
-              "https://www.inquirer.com/resizer/JmbnMe9pQTBvgUpraYaR6YBE5f8=/1400x932/smart/arc-anglerfish-arc2-prod-pmn.s3.amazonaws.com/public/KDHKAOOKANC2LHCOA3UNRVNQOE.jpg",
-          }}
-        />
-        <Text>Name</Text>
-        <Text>Price</Text>
-        <Button
-          title="Details"
-          onPress={() => navigation.navigate("Details")}
-        />
+        {auctionList.map((auction) => {
+          return (
+            <View>
+              <Image
+                style={{ width: "100%", height: 200, resizeMode: "stretch" }}
+                source={{
+                  uri: auction.image,
+                }}
+              />
+              <Text>{auction.id}</Text>
+
+              <Text>Price</Text>
+              <Button
+                title="Details"
+                onPress={() => navigation.navigate("Details")}
+              />
+            </View>
+          );
+        })}
       </View>
     </View>
   );

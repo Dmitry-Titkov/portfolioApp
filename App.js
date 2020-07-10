@@ -6,7 +6,7 @@ import LoginScreen from "./src/components/Login";
 import HomeScreen from "./src/components/homeScreen";
 import RegisterScreen from "./src/components/Register";
 import DetailsPage from "./src/components/DetailsPage";
-import SetAuction from "./src/components/SetAuction";
+import startAuction from "./src/components/SetAuction";
 import Profile from "./src/components/Profile";
 
 const Tab = createMaterialTopTabNavigator();
@@ -17,7 +17,7 @@ function Navigatiion() {
     <Tab.Navigator>
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Login" component={LoginScreen} />
-      <Tab.Screen name="Sell" component={SetAuction} />
+      <Tab.Screen name="Sell" component={startAuction} />
       <Tab.Screen name="Profile" component={Profile} />
     </Tab.Navigator>
   );

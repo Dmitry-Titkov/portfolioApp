@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import {
   StyleSheet,
   TouchableHighlight,
@@ -15,42 +16,31 @@ import DatePicker from "react-native-datepicker";
 
 class SetAuction extends React.Component {
   state = {
-    productName: "",
-    price: "",
-    description: "",
-    endDate: new Date(),
-    auctionEndDate: null,
-    endDateText: "Select auction end date ...",
-    endTimeHour: null,
-    endTimeMinute: null,
-    endTimeText: "Select auction end time ...",
-    auctionEndTime: null,
-    pictureSource: null,
-    picture: null,
-    traffic: 0,
-    statusColor: "green",
-    successStatus: "",
-    isConnected: null,
+    title: "",
+    minimumBid: "",
+    descriptor: "",
+    end: new Date(),
+    imageUrl: "",
   };
-  constructor(props) {
-    super(props);
-    //set value in state for initial date
-    this.state = { date: new Date() };
+  SubmitForm() {
+    var data = [
+      {
+        name: "name",
+        data: this.state.title,
+        name: "minimumBid",
+        data: this.state.minimumBid,
+        name: "end_date",
+        data: this.state.end,
+        name: "description",
+        data: this.state.descriptor,
+        name: "image",
+        data: this.state.imageUrl,
+      },
+    ];
+    axios.post(`http://localhost:4000/auctions/1/create`, data);
   }
 
   render() {
-    let img =
-      this.state.pictureSource == null ? null : (
-        <Lightbox
-          underlayColor="white"
-          backgroundColor="Green"
-          navigator={this.props.navigator}
-        >
-          <View style={styles.center}>
-            <Image source={this.state.pictureSource} style={styles.image} />
-          </View>
-        </Lightbox>
-      );
     return (
       <View style={styles.container}>
         <ScrollView>
@@ -65,10 +55,10 @@ class SetAuction extends React.Component {
                     style={styles.formInputText}
                     placeholder="Product name..."
                     underlineColorAndroid="Green"
-                    onChangeText={(product) => {
-                      this.setState({ productName: product });
+                    onChangeText={(event) => {
+                      this.setState({ title: event });
                     }}
-                    value={this.state.productName}
+                    value={this.state.title}
                     autoCorrect={false}
                     returnKeyType="next"
                     ref="1"
@@ -88,10 +78,10 @@ class SetAuction extends React.Component {
                     placeholder="Minimal price..."
                     keyboardType="numeric"
                     underlineColorAndroid={"Green"}
-                    onChangeText={(price) => {
-                      this.setState({ price: price });
+                    onChangeText={(event) => {
+                      this.setState({ minimumBid: event });
                     }}
-                    value={this.state.price}
+                    value={this.state.minimumBid}
                     autoCorrect={false}
                     returnKeyType="next"
                     ref="2"
@@ -104,7 +94,7 @@ class SetAuction extends React.Component {
                 </View>
                 <DatePicker
                   style={{ width: 200 }}
-                  date={this.state.date}
+                  date={Date.now()}
                   mode="date"
                   placeholder="select date"
                   format="DD-MM-YYYY"
@@ -123,8 +113,8 @@ class SetAuction extends React.Component {
                       marginLeft: 36,
                     },
                   }}
-                  onDateChange={(date) => {
-                    this.setState({ date: date });
+                  onDateChange={(event) => {
+                    this.setState({ end: event });
                   }}
                 />
               </View>
@@ -136,8 +126,8 @@ class SetAuction extends React.Component {
                   <View style={styles.formRowButtons}>
                     <TouchableHighlight
                       style={styles.buttonTouch}
-                      onPress={() => {
-                        this.sendData();
+                      onPress={(event) => {
+                        this.setState({ imageUrl: event });
                       }}
                       underlayColor="blue"
                     >
@@ -148,7 +138,6 @@ class SetAuction extends React.Component {
                   </View>
                 </View>
               </TouchableHighlight>
-              <View style={styles.imgHolder}>{img}</View>
               <View style={[styles.formRow]}>
                 <View style={styles.formLabelDescription}>
                   <Text style={styles.labelText}></Text>
@@ -159,36 +148,25 @@ class SetAuction extends React.Component {
                     multiline={true}
                     placeholder="Description..."
                     underlineColorAndroid="Green"
-                    onChangeText={(description) => {
-                      this.setState({ description: description });
+                    onChangeText={(event) => {
+                      this.setState({ descriptor: event });
                     }}
-                    value={this.state.description}
+                    value={this.state.descriptor}
                     autoCorrect={false}
                     returnKeyType="go"
-                    onSubmitEditing={() => {
-                      this.sendData();
+                    onSubmitEditing={(event) => {
+                      this.setState({ descriptor: event });
                     }}
                     numberOfLines={8}
                   />
                 </View>
               </View>
-              {this.state.responseMsg ? (
-                <View style={styles.statusText}>
-                  <Text style={{ color: this.state.statusColor }}>
-                    {this.state.responseMsg}
-                  </Text>
-                </View>
-              ) : null}
-              {this.state.successStatus ? (
-                <View style={styles.statusText}>
-                  <Text style={styles.success}>{this.state.successStatus}</Text>
-                </View>
-              ) : null}
+
               <View style={styles.formRowButtons}>
                 <TouchableHighlight
                   style={styles.buttonTouch}
                   onPress={() => {
-                    this.sendData();
+                    this.SubmitForm();
                   }}
                   underlayColor="Green"
                 >
@@ -202,11 +180,6 @@ class SetAuction extends React.Component {
         </ScrollView>
       </View>
     );
-  }
-  show() {
-    pick((source, data) => {
-      this.setState({ pictureSource: source, picture: data });
-    });
   }
 }
 
