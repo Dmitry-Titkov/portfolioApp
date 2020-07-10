@@ -1,4 +1,5 @@
 import React from "react";
+import { apiUrl } from "../config/constants";
 import {
   Text,
   View,
@@ -93,13 +94,13 @@ export default function DetailPage({ navigation, route }) {
   const user = useSelector(selectUser);
 
   async function FetchAuctionList() {
-    const response = await axios.get(`http://localhost:4000`);
+    const response = await axios.get(apiUrl);
     setAuctionList(response.data[fetchItem]);
     setPlacedBids(response.data[fetchItem].bids);
   }
 
   async function FetchReviews() {
-    const responseReviews = await axios.get(`http://localhost:4000/review`);
+    const responseReviews = await axios.get(apiUrl);
     setPlaceReview(responseReviews.data[fetchItem].reviews);
   }
 
@@ -117,11 +118,7 @@ export default function DetailPage({ navigation, route }) {
 
       var header = { headers: { Authorization: `Bearer ${user.token}` } };
 
-      axios.post(
-        `http://localhost:4000/auctions/${auctionList.id}/bid`,
-        data,
-        header
-      );
+      axios.post(`${apiUrl}/${auctionList.id}/bid`, data, header);
     } else {
       window.alert("There's no point bidding less then the highest bid");
     }
@@ -138,11 +135,7 @@ export default function DetailPage({ navigation, route }) {
 
     var header = { headers: { Authorization: `Bearer ${user.token}` } };
 
-    axios.post(
-      `http://localhost:4000/auctions/${auctionList.id}/review`,
-      data,
-      header
-    );
+    axios.post(`${apiUrl}/${auctionList.id}/review`, data, header);
   }
 
   return (

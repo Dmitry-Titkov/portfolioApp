@@ -10,15 +10,14 @@ import {
 } from "react-native";
 import axios from "axios";
 import { useState } from "react";
+import { apiUrl } from "../config/constants";
 
 export default function Search({ navigation }) {
   const [userInput, setUserInput] = useState("");
   const [searchResult, setSearchResult] = useState("");
 
   async function fetchName(userInput) {
-    const response = await axios.get(
-      `http://localhost:4000/search/${userInput}`
-    );
+    const response = await axios.get(`${apiUrl}/search/${userInput}`);
     setSearchResult(response.data);
   }
   if (searchResult === "") {
