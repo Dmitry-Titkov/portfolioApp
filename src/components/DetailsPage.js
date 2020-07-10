@@ -94,13 +94,13 @@ export default function DetailPage({ navigation, route }) {
   const user = useSelector(selectUser);
 
   async function FetchAuctionList() {
-    const response = await axios.get(apiUrl);
+    const response = await axios.get(`${apiUrl}`);
     setAuctionList(response.data[fetchItem]);
     setPlacedBids(response.data[fetchItem].bids);
   }
 
   async function FetchReviews() {
-    const responseReviews = await axios.get(apiUrl);
+    const responseReviews = await axios.get(`${apiUrl}/review`);
     setPlaceReview(responseReviews.data[fetchItem].reviews);
   }
 
