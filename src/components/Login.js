@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import {
   StyleSheet,
   TouchableHighlight,
@@ -8,110 +9,87 @@ import {
   StatusBar,
   TextInput,
 } from "react-native";
+import { login } from "../store/user/actions";
+import { selectToken } from "../store/user/selector";
+import { useDispatch, useSelector } from "react-redux";
 
-class Login extends React.Component {
-  state = {
-    username: "",
-    password: "",
-    traffic: 0,
-    isConnected: null,
-  };
-  render() {
-    return (
-      <View style={styles.container}>
-        <ScrollView>
-          <StatusBar backgroundColor="#f15a24" />
-          <View style={styles.body}>
-            <View style={styles.loginForm}>
-              <View style={[styles.formRow]}>
-                <View style={styles.formLabel}>
-                  <Text style={styles.labelText}></Text>
-                </View>
-                <View style={styles.formInputControl}>
-                  <TextInput
-                    style={styles.formInputText}
-                    placeholder="Email..."
-                    underlineColorAndroid="rgba(0, 0, 0, 0)"
-                    onChangeText={(login) => {
-                      this.setState({ username: login });
-                    }}
-                    value={this.state.username}
-                    autoCorrect={false}
-                    keyboardType="email-address"
-                    returnKeyType="next"
-                    ref="1"
-                    onSubmitEditing={() => {
-                      this.focusNextField("2");
-                    }}
-                  />
-                </View>
-              </View>
+export default function SignIn({ navigation }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
 
-              <View style={[styles.formRow]}>
-                <View style={styles.formLabel}>
-                  <Text style={styles.labelText}></Text>
-                </View>
-                <View style={styles.formInputControl}>
-                  <TextInput
-                    style={[styles.formInputText]}
-                    placeholder="Password..."
-                    underlineColorAndroid="rgba(0, 0, 0, 0)"
-                    onChangeText={(pass) => {
-                      this.setState({ password: pass });
-                    }}
-                    value={this.state.password}
-                    autoCorrect={false}
-                    secureTextEntry={true}
-                    ref="2"
-                  />
-                </View>
+  function submitForm() {
+    dispatch(login(email, password));
+  }
+
+  return (
+    <View style={styles.container}>
+      <ScrollView>
+        <StatusBar backgroundColor="#f15a24" />
+        <View style={styles.body}>
+          <View style={styles.loginForm}>
+            <View style={[styles.formRow]}>
+              <View style={styles.formLabel}>
+                <Text style={styles.labelText}></Text>
               </View>
-              {this.state.responseMsg ? (
-                <View
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    paddingTop: 20,
-                  }}
+              <View style={styles.formInputControl}>
+                <TextInput
+                  style={styles.formInputText}
+                  placeholder="Email..."
+                  underlineColorAndroid="rgba(0, 0, 0, 0)"
+                  onChange={(event) => setEmail(event.target.value)}
+                  value={email}
+                  autoCorrect={false}
+                  keyboardType="email-address"
+                  returnKeyType="next"
+                />
+              </View>
+            </View>
+
+            <View style={[styles.formRow]}>
+              <View style={styles.formLabel}>
+                <Text style={styles.labelText}></Text>
+              </View>
+              <View style={styles.formInputControl}>
+                <TextInput
+                  style={[styles.formInputText]}
+                  placeholder="Password..."
+                  underlineColorAndroid="rgba(0, 0, 0, 0)"
+                  onChange={(event) => setPassword(event.target.value)}
+                  value={password}
+                  autoCorrect={false}
+                  secureTextEntry={true}
+                />
+              </View>
+            </View>
+
+            <View>
+              <View style={styles.formRowButtons}>
+                <TouchableHighlight onClick={submitForm}>
+                  <View style={styles.button}>
+                    <Text style={styles.buttonText}>Login</Text>
+                  </View>
+                </TouchableHighlight>
+              </View>
+              <View style={styles.formRowButtons}>
+                <TouchableHighlight
+                  style={styles.buttonTouch}
+                  onPress={() => this.props.navigation.navigate("Register")}
+                  alert
                 >
-                  <Text style={{ color: this.state.statusColor }}>
-                    {this.state.responseMsg}
-                  </Text>
-                </View>
-              ) : null}
-              {this.state.traffic == 0 ? (
-                <View>
-                  <View style={styles.formRowButtons}>
-                    <TouchableHighlight
-                      onPress={() => {
-                        this.login();
-                      }}
-                    >
-                      <View style={styles.button}>
-                        <Text style={styles.buttonText}>Login</Text>
-                      </View>
-                    </TouchableHighlight>
+                  <View style={styles.button}>
+                    <Text style={styles.buttonText}>
+                      Don't have an account yet?
+                    </Text>
                   </View>
-                  <View style={styles.formRowButtons}>
-                    <TouchableHighlight
-                      style={styles.buttonTouch}
-                      onPress={() => this.props.navigation.navigate("Register")}
-                    >
-                      <View style={styles.button}>
-                        <Text style={styles.buttonText}>
-                          Don't have an account yet?
-                        </Text>
-                      </View>
-                    </TouchableHighlight>
-                  </View>
-                </View>
-              ) : null}
+                </TouchableHighlight>
+              </View>
             </View>
           </View>
-        </ScrollView>
-      </View>
-    );
-  }
+        </View>
+      </ScrollView>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -179,5 +157,3 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
-
-export default Login;

@@ -23,20 +23,17 @@ class SetAuction extends React.Component {
     imageUrl: "",
   };
   SubmitForm() {
-    var data = [
-      {
-        name: "name",
-        data: this.state.title,
-        name: "minimumBid",
-        data: this.state.minimumBid,
-        name: "end_date",
-        data: this.state.end,
-        name: "description",
-        data: this.state.descriptor,
-        name: "image",
-        data: this.state.imageUrl,
-      },
-    ];
+    var data = {
+      name: this.state.title,
+
+      minimumBid: this.state.minimumBid,
+
+      end_date: this.state.end,
+
+      description: this.state.descriptor,
+
+      image: this.state.imageUrl,
+    };
     axios.post(`http://localhost:4000/auctions/1/create`, data);
   }
 
@@ -94,12 +91,12 @@ class SetAuction extends React.Component {
                 </View>
                 <DatePicker
                   style={{ width: 200 }}
-                  date={Date.now()}
+                  date="01-08-2020"
                   mode="date"
                   placeholder="select date"
                   format="DD-MM-YYYY"
-                  minDate="01-01-2016"
-                  maxDate="01-01-2019"
+                  minDate="01-08-2020"
+                  maxDate="31-12-2020"
                   confirmBtnText="Confirm"
                   cancelBtnText="Cancel"
                   customStyles={{
@@ -118,7 +115,26 @@ class SetAuction extends React.Component {
                   }}
                 />
               </View>
-              <TouchableHighlight
+              <View style={[styles.formRow]}>
+                <View style={styles.formLabel}>
+                  <Text style={styles.labelText}></Text>
+                </View>
+                <View style={styles.formInputControl}>
+                  <TextInput
+                    style={styles.formInputText}
+                    placeholder="Image url..."
+                    underlineColorAndroid={"Green"}
+                    onChangeText={(event) => {
+                      this.setState({ imageUrl: event });
+                    }}
+                    value={this.state.imageUrl}
+                    autoCorrect={false}
+                    returnKeyType="next"
+                    ref="2"
+                  />
+                </View>
+              </View>
+              {/* <TouchableHighlight
                 style={[styles.formButton]}
                 underlayColor="Green"
               >
@@ -137,7 +153,7 @@ class SetAuction extends React.Component {
                     </TouchableHighlight>
                   </View>
                 </View>
-              </TouchableHighlight>
+              </TouchableHighlight> */}
               <View style={[styles.formRow]}>
                 <View style={styles.formLabelDescription}>
                   <Text style={styles.labelText}></Text>

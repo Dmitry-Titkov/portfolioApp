@@ -11,18 +11,9 @@ import {
   TextInput,
   FlatList,
   Image,
-  AsyncStorage,
-  NetInfo,
 } from "react-native";
 
 export default function List() {
-  state = {
-    respoData: "",
-    networkResponse: "",
-    statusColor: "rgba(0,255,0,0.8)",
-    isConnected: null,
-  };
-
   const styles = StyleSheet.create({
     container: {
       marginTop: 53,
@@ -103,7 +94,7 @@ export default function List() {
     <View style={([styles.container], { paddingBottom: 53, paddingTop: 53 })}>
       <ScrollView>
         {auctionList.map((auction) => {
-          <View>
+          <View key={auction.id}>
             <Image
               style={{ width: 80, height: 80, borderRadius: 50 }}
               source={{ uri: auction.image }}
