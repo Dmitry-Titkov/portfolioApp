@@ -49,6 +49,9 @@ back end: [backEnd](https://github.com/Dmitry-Titkov/portfolioAppBack)
 ## Instalation
 
 'Git clone' or download the repo
+
 Enter the project 'cd'
+
 Use 'npm install' to install the depedencies
+
 Use 'expo start' to utilise the app
