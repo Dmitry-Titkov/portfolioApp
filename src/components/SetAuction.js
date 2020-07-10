@@ -6,19 +6,16 @@ import {
   ScrollView,
   Text,
   View,
-  StatusBar,
   TextInput,
-  TouchableWithoutFeedback,
   Image,
-  Button,
 } from "react-native";
-import DatePicker from "react-native-datepicker";
+
 import { selectUser } from "../store/user/selector";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 export default function SetAuction() {
   const [title, setTitle] = useState("");
-  const [minimumBid, setMinimumBid] = useState("");
+  const [minBid, setMinBid] = useState("");
   const [descriptor, setDescriptor] = useState("");
   const [end, setEnd] = useState("");
   const [imageUrl, setImageUrl] = useState("");
@@ -27,7 +24,7 @@ export default function SetAuction() {
   function SubmitForm() {
     var data = {
       name: title,
-      minimumBid: minimumBid,
+      minimumBid: minBid,
       date_end: end,
       description: descriptor,
       image: imageUrl,
@@ -35,7 +32,37 @@ export default function SetAuction() {
 
     var header = { headers: { Authorization: `Bearer ${user.token}` } };
 
-    axios.post(`http://localhost:4000/auctions/1/create`, data, header);
+    axios.post(
+      `http://localhost:4000/auctions/${user.id}/create`,
+      data,
+      header
+    );
+  }
+  const regEx = /^\d{4}-\d{2}-\d{2}$/;
+  const today = new Date();
+
+  function validationForm() {
+    if (
+      title === "" ||
+      minBid === "" ||
+      end === "" ||
+      descriptor === "" ||
+      imageUrl === ""
+    ) {
+      window.alert("All fields must be filled in");
+    } else {
+      if (!end.match(regEx)) {
+        window.alert(
+          "Please enter the date in the following format YYYY-MM-DD"
+        );
+      } else {
+        if (today.getTime() > new Date(end).getTime()) {
+          window.alert("It's impossible to make an auction in the past");
+        } else {
+          SubmitForm();
+        }
+      }
+    }
   }
 
   return (
@@ -69,8 +96,8 @@ export default function SetAuction() {
                   placeholder="Minimum price..."
                   keyboardType="numeric"
                   underlineColorAndroid={"Green"}
-                  onChange={(event) => setMinimumBid(event.target.value)}
-                  value={minimumBid}
+                  onChange={(event) => setMinBid(event.target.value)}
+                  value={minBid}
                   autoCorrect={false}
                   returnKeyType="next"
                 />
@@ -84,7 +111,6 @@ export default function SetAuction() {
                 <TextInput
                   style={styles.formInputText}
                   placeholder="End date..."
-                  keyboardType="numeric"
                   underlineColorAndroid={"Green"}
                   onChange={(event) => setEnd(event.target.value)}
                   value={end}
@@ -119,26 +145,6 @@ export default function SetAuction() {
                 uri: imageUrl,
               }}
             />
-            {/* <TouchableHighlight
-                style={[styles.formButton]}
-                underlayColor="Green"
-              >
-                <View>
-                  <View style={styles.formRowButtons}>
-                    <TouchableHighlight
-                      style={styles.buttonTouch}
-                      onPress={(event) => {
-                        this.setState({ imageUrl: event });
-                      }}
-                      underlayColor="blue"
-                    >
-                      <View style={styles.button}>
-                        <Text style={styles.buttonText}>add a photo</Text>
-                      </View>
-                    </TouchableHighlight>
-                  </View>
-                </View>
-              </TouchableHighlight> */}
             <View style={[styles.formRow]}>
               <View style={styles.formInputControl}>
                 <TextInput
@@ -159,7 +165,7 @@ export default function SetAuction() {
             <View style={styles.formRowButtons}>
               <TouchableHighlight
                 style={styles.buttonTouch}
-                onPress={SubmitForm}
+                onPress={validationForm}
                 underlayColor="Green"
               >
                 <View style={styles.button}>

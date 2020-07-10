@@ -7,14 +7,10 @@ import {
   ScrollView,
   Text,
   View,
-  StatusBar,
-  TextInput,
-  FlatList,
-  Image,
   AsyncStorage,
-  NetInfo,
+  Button,
 } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectUser } from "../../src/store/user/selector";
 
 export default function Profile({ navigation }) {
@@ -22,10 +18,8 @@ export default function Profile({ navigation }) {
     container: {
       marginTop: 53,
       backgroundColor: "#fff",
-      flex: 1,
     },
     body: {
-      flex: 1,
       flexDirection: "column",
       justifyContent: "flex-start",
     },
@@ -44,16 +38,14 @@ export default function Profile({ navigation }) {
     },
     formLabel: {
       backgroundColor: "#fff",
-      flex: 1,
+
       alignItems: "center",
       justifyContent: "center",
     },
     labelText: {
       color: "#f15a24",
     },
-    formInputControl: {
-      flex: 10,
-    },
+
     formRowButtons: {
       marginLeft: 30,
       marginTop: 30,
@@ -85,47 +77,78 @@ export default function Profile({ navigation }) {
   });
 
   const [userList, setUserList] = useState([]);
-  const [reviewsList, setReviewsList] = useState([]);
+  const [auctionList, setAuctionList] = useState([]);
+  const [bidlist, setBidlist] = useState([]);
   const user = useSelector(selectUser);
 
   async function FetchUser() {
     const response = await axios.get(`http://localhost:4000/user/${user.id}`);
     setUserList(response.data);
-    setReviewsList(response.data.reviews);
-    console.log("reviews", response.data);
+    setBidlist(response.data.bids);
+    setAuctionList(response.data.auctions);
   }
 
   useEffect(() => {
     FetchUser();
   }, []);
   return (
-    <View style={([styles.container], { paddingBottom: 53, paddingTop: 53 })}>
+    <View style={[styles.container]}>
       <ScrollView>
         <Text style={{ fontWeight: "bold", color: "rgba(107, 35, 9, 0.84)" }}>
           Name: {userList.display_name}
           <br></br>
-          {userList.createdAt}
+          Created at: {userList.createdAt}
           <br></br>
-          <Text>Reviews</Text>
-          {reviewsList.map((review) => {
-            return (
-              <View key={review.id}>
-                <Text>
-                  {"\n"}
-                  {review.comment}
-                  {"\n"}
-                  {review.rating}
-                  {"\n"}
-                </Text>
-              </View>
-            );
-          })}
+          <Text>Your Auctions {"\n"}</Text>
+          <View>
+            {auctionList.map((auction) => {
+              return (
+                <View key={auction.id}>
+                  <Button
+                    title={auction.name}
+                    style={{ paddingBottom: 53, paddingTop: 53 }}
+                    onPress={() =>
+                      navigation.navigate("Details", {
+                        auctionId: auction.id,
+                      })
+                    }
+                  />
+                  <Text>{"\n"}</Text>
+                </View>
+              );
+            })}
+          </View>
+          <Text>
+            {"\n"} Your Bids per date {"\n"}
+          </Text>
+          <View>
+            {bidlist.map((auction) => {
+              return (
+                <View key={auction.id}>
+                  <Button
+                    title={auction.createdAt.substring(0, 10)}
+                    style={{ paddingBottom: 53, paddingTop: 53 }}
+                    onPress={() =>
+                      navigation.navigate("Details", {
+                        auctionId: auction.id,
+                      })
+                    }
+                  />
+                  <Text>{"\n"}</Text>
+                </View>
+              );
+            })}
+          </View>
         </Text>
         <View style={styles.formRowButtons}>
           <TouchableHighlight
             style={styles.buttonTouch}
             underlayColor="Green"
-            onPress={AsyncStorage.clear()}
+            onPress={() => {
+              AsyncStorage.clear();
+              navigation.navigate("Home");
+              window.location.reload(false);
+            }}
           >
             <View style={styles.button}>
               <Text style={styles.buttonText}>Log out</Text>

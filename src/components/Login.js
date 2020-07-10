@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   StyleSheet,
@@ -6,83 +6,101 @@ import {
   ScrollView,
   Text,
   View,
-  StatusBar,
   TextInput,
 } from "react-native";
 import { login } from "../store/user/actions";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export default function SignIn({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [userList, setUserList] = useState("");
   const dispatch = useDispatch();
+
+  async function FetchUserList() {
+    const response = await axios.get(`http://localhost:4000/user`);
+    setUserList(response.data);
+  }
+
+  useEffect(() => {
+    FetchUserList();
+  }, []);
 
   function submitForm() {
     dispatch(login(email, password));
   }
 
+  function validationForm() {
+    if (email === "" || password === "") {
+      window.alert("All fields must be filled in");
+    } else {
+      if (userList.find((mail) => mail.email === email)) {
+        submitForm();
+      } else {
+        window.alert("User with this email does not exist");
+      }
+    }
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView>
-        <StatusBar backgroundColor="#f15a24" />
         <View style={styles.body}>
-          <View style={styles.loginForm}>
-            <View style={[styles.formRow]}>
-              <View style={styles.formLabel}>
-                <Text style={styles.labelText}></Text>
-              </View>
-              <View style={styles.formInputControl}>
-                <TextInput
-                  style={styles.formInputText}
-                  placeholder="Email..."
-                  underlineColorAndroid="rgba(0, 0, 0, 0)"
-                  onChange={(event) => setEmail(event.target.value)}
-                  value={email}
-                  autoCorrect={false}
-                  keyboardType="email-address"
-                  returnKeyType="next"
-                />
-              </View>
+          <View style={[styles.formRow]}>
+            <View style={styles.formLabel}>
+              <Text style={styles.labelText}></Text>
             </View>
-
-            <View style={[styles.formRow]}>
-              <View style={styles.formLabel}>
-                <Text style={styles.labelText}></Text>
-              </View>
-              <View style={styles.formInputControl}>
-                <TextInput
-                  style={[styles.formInputText]}
-                  placeholder="Password..."
-                  underlineColorAndroid="rgba(0, 0, 0, 0)"
-                  onChange={(event) => setPassword(event.target.value)}
-                  value={password}
-                  autoCorrect={false}
-                  secureTextEntry={true}
-                />
-              </View>
+            <View style={styles.formInputControl}>
+              <TextInput
+                style={styles.formInputText}
+                placeholder="Email..."
+                underlineColorAndroid="rgba(0, 0, 0, 0)"
+                onChange={(event) => setEmail(event.target.value)}
+                value={email}
+                autoCorrect={false}
+                keyboardType="email-address"
+                returnKeyType="next"
+              />
             </View>
+          </View>
 
-            <View>
-              <View style={styles.formRowButtons}>
-                <TouchableHighlight onClick={submitForm}>
-                  <View style={styles.button}>
-                    <Text style={styles.buttonText}>Login</Text>
-                  </View>
-                </TouchableHighlight>
-              </View>
-              <View style={styles.formRowButtons}>
-                <TouchableHighlight
-                  style={styles.buttonTouch}
-                  onPress={() => navigation.navigate("Register")}
-                  alert
-                >
-                  <View style={styles.button}>
-                    <Text style={styles.buttonText}>
-                      Don't have an account yet?
-                    </Text>
-                  </View>
-                </TouchableHighlight>
-              </View>
+          <View style={[styles.formRow]}>
+            <View style={styles.formLabel}>
+              <Text style={styles.labelText}></Text>
+            </View>
+            <View style={styles.formInputControl}>
+              <TextInput
+                style={[styles.formInputText]}
+                placeholder="Password..."
+                underlineColorAndroid="rgba(0, 0, 0, 0)"
+                onChange={(event) => setPassword(event.target.value)}
+                value={password}
+                autoCorrect={false}
+                secureTextEntry={true}
+              />
+            </View>
+          </View>
+
+          <View>
+            <View style={styles.formRowButtons}>
+              <TouchableHighlight onClick={validationForm}>
+                <View style={styles.button}>
+                  <Text style={styles.buttonText}>Login</Text>
+                </View>
+              </TouchableHighlight>
+            </View>
+            <View style={styles.formRowButtons}>
+              <TouchableHighlight
+                style={styles.buttonTouch}
+                onPress={() => navigation.navigate("Register")}
+                alert
+              >
+                <View style={styles.button}>
+                  <Text style={styles.buttonText}>
+                    Don't have an account yet?
+                  </Text>
+                </View>
+              </TouchableHighlight>
             </View>
           </View>
         </View>

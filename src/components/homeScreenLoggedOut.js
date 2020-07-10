@@ -54,15 +54,6 @@ export default function StartPage({ navigation, route }) {
               >
                 Auction end: {auction.date_end.substring(0, 10)}
               </Text>
-              <Button
-                title="Details"
-                style={{ marginTop: 30, marginBot: 30 }}
-                onPress={() =>
-                  navigation.navigate("Details", {
-                    auctionId: auction.id,
-                  })
-                }
-              />
             </View>
           );
         })}

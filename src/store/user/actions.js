@@ -6,7 +6,7 @@ import {
   appDoneLoading,
   showMessageWithTimeout,
   setMessage,
-} from "../appState/actions";
+} from "../AppState/Actions";
 
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 export const TOKEN_STILL_VALID = "TOKEN_STILL_VALID";
@@ -67,6 +67,7 @@ export const login = (email, password) => {
     } catch (error) {
       if (error.response) {
         console.log(error.response.data.message);
+        window.alert(error.response.data.message);
         dispatch(setMessage("danger", true, error.response.data.message));
       } else {
         console.log(error.message);
