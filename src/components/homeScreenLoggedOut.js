@@ -1,5 +1,12 @@
 import React from "react";
-import { Text, View, Image, Button, StyleSheet } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  Button,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { apiUrl } from "../config/constants";
@@ -21,44 +28,46 @@ export default function StartPage({ navigation, route }) {
 
   return (
     <View>
-      <View style={{ flex: 1 }}>
-        {auctionList.map((auction) => {
-          return (
-            <View key={auction.id}>
-              <Text style={{ fontSize: 20, textAlign: "center" }}>
-                {auction.name}
-                {"\n"}
-              </Text>
-              <Image
-                style={{ width: "100%", height: 200, resizeMode: "stretch" }}
-                source={{
-                  uri: auction.image,
-                }}
-              />
-              <Text
-                style={{
-                  fontSize: 20,
-                  textAlign: "center",
-                  marginTop: 30,
-                  marginBottom: 20,
-                }}
-              >
-                Bids placed: {auction.bids.length}
-              </Text>
-              <Text
-                style={{
-                  fontSize: 20,
-                  textAlign: "center",
-                  marginTop: 10,
-                  marginBottom: 20,
-                }}
-              >
-                Auction end: {auction.date_end.substring(0, 10)}
-              </Text>
-            </View>
-          );
-        })}
-      </View>
+      <ScrollView>
+        <View>
+          {auctionList.map((auction) => {
+            return (
+              <View key={auction.id}>
+                <Text style={{ fontSize: 20, textAlign: "center" }}>
+                  {auction.name}
+                  {"\n"}
+                </Text>
+                <Image
+                  style={{ width: "100%", height: 200, resizeMode: "stretch" }}
+                  source={{
+                    uri: auction.image,
+                  }}
+                />
+                <Text
+                  style={{
+                    fontSize: 20,
+                    textAlign: "center",
+                    marginTop: 30,
+                    marginBottom: 20,
+                  }}
+                >
+                  Bids placed: {auction.bids.length}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    textAlign: "center",
+                    marginTop: 10,
+                    marginBottom: 20,
+                  }}
+                >
+                  Auction end: {auction.date_end.substring(0, 10)}
+                </Text>
+              </View>
+            );
+          })}
+        </View>
+      </ScrollView>
     </View>
   );
 }

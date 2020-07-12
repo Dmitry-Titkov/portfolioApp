@@ -7,6 +7,7 @@ import {
   Text,
   View,
   TextInput,
+  Alert,
 } from "react-native";
 import { login } from "../store/user/actions";
 import { useDispatch } from "react-redux";
@@ -31,14 +32,18 @@ export default function SignIn({ navigation }) {
     dispatch(login(email, password));
   }
 
+  function setEmailLowerCase(newEmail) {
+    setEmail(newEmail.toLowerCase());
+  }
+
   function validationForm() {
     if (email === "" || password === "") {
-      window.alert("All fields must be filled in");
+      Alert.alert("All fields must be filled in");
     } else {
       if (userList.find((mail) => mail.email === email)) {
         submitForm();
       } else {
-        window.alert("User with this email does not exist");
+        Alert.alert("User with this email does not exist");
       }
     }
   }
@@ -55,8 +60,9 @@ export default function SignIn({ navigation }) {
               <TextInput
                 style={styles.formInputText}
                 placeholder="Email..."
-                underlineColorAndroid="rgba(0, 0, 0, 0)"
-                onChange={(event) => setEmail(event.target.value)}
+                onChangeText={(text) => {
+                  setEmailLowerCase(text);
+                }}
                 value={email}
                 autoCorrect={false}
                 keyboardType="email-address"
@@ -73,8 +79,7 @@ export default function SignIn({ navigation }) {
               <TextInput
                 style={[styles.formInputText]}
                 placeholder="Password..."
-                underlineColorAndroid="rgba(0, 0, 0, 0)"
-                onChange={(event) => setPassword(event.target.value)}
+                onChangeText={(text) => setPassword(text)}
                 value={password}
                 autoCorrect={false}
                 secureTextEntry={true}
@@ -84,7 +89,7 @@ export default function SignIn({ navigation }) {
 
           <View>
             <View style={styles.formRowButtons}>
-              <TouchableHighlight onClick={validationForm}>
+              <TouchableHighlight onPress={() => validationForm()}>
                 <View style={styles.button}>
                   <Text style={styles.buttonText}>Login</Text>
                 </View>
@@ -114,10 +119,8 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 53,
     backgroundColor: "#fff",
-    flex: 1,
   },
   body: {
-    flex: 1,
     flexDirection: "column",
     justifyContent: "flex-start",
   },
@@ -136,7 +139,7 @@ const styles = StyleSheet.create({
   },
   formLabel: {
     backgroundColor: "#fff",
-    flex: 1,
+
     alignItems: "center",
     justifyContent: "center",
   },

@@ -19,7 +19,9 @@ export default function SetAuction() {
   const [minBid, setMinBid] = useState("");
   const [descriptor, setDescriptor] = useState("");
   const [end, setEnd] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState(
+    "https://www.peoplechange.nl/wp-content/uploads/2017/04/placeholder.jpg"
+  );
   const user = useSelector(selectUser);
 
   function SubmitForm() {
@@ -75,7 +77,6 @@ export default function SetAuction() {
                 <TextInput
                   style={styles.formInputText}
                   placeholder="Product name..."
-                  underlineColorAndroid="Green"
                   onChange={(event) => setTitle(event.target.value)}
                   value={title}
                   autoCorrect={false}
@@ -92,7 +93,6 @@ export default function SetAuction() {
                   style={styles.formInputText}
                   placeholder="Minimum price..."
                   keyboardType="numeric"
-                  underlineColorAndroid={"Green"}
                   onChange={(event) => setMinBid(event.target.value)}
                   value={minBid}
                   autoCorrect={false}
@@ -108,7 +108,6 @@ export default function SetAuction() {
                 <TextInput
                   style={styles.formInputText}
                   placeholder="End date..."
-                  underlineColorAndroid={"Green"}
                   onChange={(event) => setEnd(event.target.value)}
                   value={end}
                   autoCorrect={false}
@@ -125,7 +124,6 @@ export default function SetAuction() {
                 <TextInput
                   style={styles.formInputText}
                   placeholder="Image url..."
-                  underlineColorAndroid={"Green"}
                   onChange={(event) => setImageUrl(event.target.value)}
                   value={imageUrl}
                   autoCorrect={false}
@@ -148,7 +146,6 @@ export default function SetAuction() {
                   style={styles.formInputTextArea}
                   multiline={true}
                   placeholder="Description..."
-                  underlineColorAndroid="Green"
                   onChange={(event) => setDescriptor(event.target.value)}
                   value={descriptor}
                   autoCorrect={false}
@@ -163,7 +160,6 @@ export default function SetAuction() {
               <TouchableHighlight
                 style={styles.buttonTouch}
                 onPress={validationForm}
-                underlayColor="Green"
               >
                 <View style={styles.button}>
                   <Text style={styles.buttonText}>Sell product</Text>
@@ -181,10 +177,8 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 53,
     backgroundColor: "#fff",
-    flex: 1,
   },
   body: {
-    flex: 1,
     flexDirection: "column",
     justifyContent: "flex-start",
   },
@@ -203,7 +197,7 @@ const styles = StyleSheet.create({
   },
   formLabel: {
     backgroundColor: "#fff",
-    flex: 1,
+
     alignItems: "center",
     justifyContent: "center",
   },

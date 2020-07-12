@@ -9,20 +9,22 @@ import {
   ScrollView,
   TextInput,
   Picker,
+  TouchableHighlight,
 } from "react-native";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../src/store/user/selector";
 export default function DetailPage({ navigation, route }) {
+  console.log("navigation", navigation);
+  console.log("route", route);
+
   const styles = StyleSheet.create({
     container: {
       marginTop: 53,
       backgroundColor: "#fff",
-      flex: 1,
     },
     body: {
-      flex: 1,
       flexDirection: "column",
       justifyContent: "flex-start",
     },
@@ -43,7 +45,7 @@ export default function DetailPage({ navigation, route }) {
     },
     formLabel: {
       backgroundColor: "#fff",
-      flex: 1,
+
       alignItems: "center",
       justifyContent: "center",
     },
@@ -83,7 +85,7 @@ export default function DetailPage({ navigation, route }) {
     },
   });
 
-  const auctionId = route.params?.auctionId ?? "2";
+  const auctionId = route.params?.userId ?? "2";
   const fetchItem = auctionId - 1;
   const [auctionList, setAuctionList] = useState([]);
   const [bidByUser, setBidByUser] = useState("");
@@ -91,13 +93,24 @@ export default function DetailPage({ navigation, route }) {
   const [placedBids, setPlacedBids] = useState([]);
   const [placeReview, setPlaceReview] = useState([]);
   const [selectedStars, setSelectedStars] = useState(1);
+  const [displayName, setDisplayName] = useState("");
+  const [userId, setUserId] = useState("");
   const user = useSelector(selectUser);
 
   async function FetchAuctionList() {
     const response = await axios.get(`${apiUrl}`);
     setAuctionList(response.data[fetchItem]);
     setPlacedBids(response.data[fetchItem].bids);
+    console.log(response.data[fetchItem].bids);
   }
+  async function FetchUser() {
+    const response = await axios.get(`${apiUrl}/user/${auctionId}`);
+    setDisplayName(response.data.display_name);
+    setUserId(response.data.id);
+  }
+  useEffect(() => {
+    FetchUser();
+  }, []);
 
   async function FetchReviews() {
     const responseReviews = await axios.get(`${apiUrl}/review`);
@@ -153,95 +166,111 @@ export default function DetailPage({ navigation, route }) {
                   uri: auctionList.image,
                 }}
               />
-              <View style={styles.borderLine}>
-                <Text style={{ textAlign: "center" }}>
-                  Description {"\n"} {auctionList.description}
+              <View style={styles.formRowButtons}>
+                <TouchableHighlight
+                  style={styles.buttonTouch}
+                  onPress={() =>
+                    navigation.navigate("UserPage", {
+                      userId: userId,
+                    })
+                  }
+                >
+                  <View style={styles.button}>
+                    <Text style={styles.buttonText}>{displayName}</Text>
+                  </View>
+                </TouchableHighlight>
+                <View style={styles.borderLine}>
+                  <Text style={{ textAlign: "center" }}>
+                    Description {"\n"} {auctionList.description}
+                  </Text>
+                </View>
+                <View style={styles.borderLine}>
+                  <Text style={{ textAlign: "center" }}>Bids</Text>
+                  {placedBids.map((bids) => {
+                    return (
+                      <View key={bids.id}>
+                        <Text style={{ textAlign: "center" }}>
+                          {bids.amount}
+                        </Text>
+                      </View>
+                    );
+                  })}
+                </View>
+                <View style={[styles.formRow]}>
+                  <View style={styles.formInputControl}>
+                    <TextInput
+                      style={(styles.formInputText, { padding: 15 })}
+                      keyboardType="numeric"
+                      placeholder="Place a bid..."
+                      onChange={(event) => setBidByUser(event.target.value)}
+                      value={bidByUser}
+                      autoCorrect={false}
+                      returnKeyType="next"
+                    />
+                  </View>
+                </View>
+                <Button
+                  title="Place bid"
+                  onPress={() => {
+                    PlaceBid();
+                    // window.location.reload(false);
+                  }}
+                />
+                <Text style={{ fontSize: 20, textAlign: "center" }}>
+                  Reviews
                 </Text>
-              </View>
-              <View style={styles.borderLine}>
-                <Text style={{ textAlign: "center" }}>Bids</Text>
-                {placedBids.map((bids) => {
+
+                {placeReview.map((reviews) => {
                   return (
-                    <View key={bids.id}>
-                      <Text style={{ textAlign: "center" }}>{bids.amount}</Text>
+                    <View key={reviews.id} style={styles.borderLine}>
+                      <Text style={{ textAlign: "center" }}>
+                        {"\n"}
+                        Rating: {reviews.rating}
+                        {"\n"}
+                        {reviews.comment}
+                      </Text>
                     </View>
                   );
                 })}
-              </View>
-              <View style={[styles.formRow]}>
-                <View style={styles.formInputControl}>
-                  <TextInput
-                    style={(styles.formInputText, { padding: 15 })}
-                    keyboardType="numeric"
-                    placeholder="Place a bid..."
-                    underlineColorAndroid={"Green"}
-                    onChange={(event) => setBidByUser(event.target.value)}
-                    value={bidByUser}
-                    autoCorrect={false}
-                    returnKeyType="next"
-                  />
-                </View>
-              </View>
-              <Button
-                title="Place bid"
-                onPress={() => {
-                  PlaceBid();
-                  window.location.reload(false);
-                }}
-              />
-              <Text style={{ fontSize: 20, textAlign: "center" }}>Reviews</Text>
 
-              {placeReview.map((reviews) => {
-                return (
-                  <View key={reviews.id} style={styles.borderLine}>
-                    <Text style={{ textAlign: "center" }}>
-                      {"\n"}
-                      Rating: {reviews.rating}
-                      {"\n"}
-                      {reviews.comment}
-                    </Text>
+                <View style={styles.container}>
+                  <Text style={{ textAlign: "center" }}>Give a rating</Text>
+                  <Picker
+                    selectedValue={selectedStars}
+                    style={{ height: 50, width: 150, alignSelf: "center" }}
+                    onValueChange={(itemValue, itemIndex) =>
+                      setSelectedStars(itemValue)
+                    }
+                  >
+                    <Picker.Item label="1" value="1" />
+                    <Picker.Item label="2" value="2" />
+                    <Picker.Item label="3" value="3" />
+                    <Picker.Item label="4" value="4" />
+                    <Picker.Item label="5" value="5" />
+                  </Picker>
+                </View>
+                <Text style={{ textAlign: "center" }}>Give a review</Text>
+                <View style={[styles.formRow]}>
+                  <View style={styles.formInputControl}>
+                    <TextInput
+                      style={styles.formInputTextArea}
+                      multiline={true}
+                      onChange={(event) => setReviewByUser(event.target.value)}
+                      value={reviewByUser}
+                      autoCorrect={false}
+                      returnKeyType="next"
+                      numberOfLines={8}
+                    />
                   </View>
-                );
-              })}
-
-              <View style={styles.container}>
-                <Text style={{ textAlign: "center" }}>Give a rating</Text>
-                <Picker
-                  selectedValue={selectedStars}
-                  style={{ height: 50, width: 150, alignSelf: "center" }}
-                  onValueChange={(itemValue, itemIndex) =>
-                    setSelectedStars(itemValue)
-                  }
-                >
-                  <Picker.Item label="1" value="1" />
-                  <Picker.Item label="2" value="2" />
-                  <Picker.Item label="3" value="3" />
-                  <Picker.Item label="4" value="4" />
-                  <Picker.Item label="5" value="5" />
-                </Picker>
-              </View>
-              <Text style={{ textAlign: "center" }}>Give a review</Text>
-              <View style={[styles.formRow]}>
-                <View style={styles.formInputControl}>
-                  <TextInput
-                    style={styles.formInputTextArea}
-                    multiline={true}
-                    underlineColorAndroid={"Green"}
-                    onChange={(event) => setReviewByUser(event.target.value)}
-                    value={reviewByUser}
-                    autoCorrect={false}
-                    returnKeyType="next"
-                    numberOfLines={8}
-                  />
                 </View>
+                <Button
+                  title="Leave review"
+                  onPress={() => {
+                    PlaceReview();
+                    // window.location.reload(false);
+                  }}
+                />
               </View>
-              <Button
-                title="Leave review"
-                onPress={() => {
-                  PlaceReview();
-                  window.location.reload(false);
-                }}
-              />
             </View>
           </View>
         </View>

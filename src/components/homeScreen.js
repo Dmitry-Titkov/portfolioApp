@@ -20,8 +20,8 @@ export default function StartPage({ navigation, route }) {
   });
 
   return (
-    <View>
-      <View style={{ flex: 1 }}>
+    <View style={styles.viewfix}>
+      <View style={styles.viewfix}>
         {auctionList.map((auction) => {
           return (
             <View key={auction.id}>
@@ -93,5 +93,9 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "black",
+  },
+  viewfix: {
+    width: null,
+    height: null,
   },
 });

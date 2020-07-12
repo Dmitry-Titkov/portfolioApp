@@ -34,7 +34,6 @@ export default function Search({ navigation }) {
                   <TextInput
                     style={styles.formInputText}
                     placeholder="Search..."
-                    underlineColorAndroid="Green"
                     onChange={(event) => setUserInput(event.target.value)}
                     value={userInput}
                     autoCorrect={false}
@@ -70,7 +69,6 @@ export default function Search({ navigation }) {
                   <TextInput
                     style={styles.formInputText}
                     placeholder="Search..."
-                    underlineColorAndroid="Green"
                     onChange={(event) => setUserInput(event.target.value)}
                     value={userInput}
                     autoCorrect={false}
@@ -133,10 +131,8 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 53,
     backgroundColor: "#fff",
-    flex: 1,
   },
   body: {
-    flex: 1,
     flexDirection: "column",
     justifyContent: "flex-start",
   },
@@ -155,7 +151,7 @@ const styles = StyleSheet.create({
   },
   formLabel: {
     backgroundColor: "#fff",
-    flex: 1,
+
     alignItems: "center",
     justifyContent: "center",
   },

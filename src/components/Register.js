@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import { apiUrl } from "../config/constants";
 
-export default function Rgister({ navigation }) {
+export default function Register({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repassword, setrePassword] = useState("");
@@ -75,7 +75,6 @@ export default function Rgister({ navigation }) {
                 <TextInput
                   style={styles.formInputText}
                   placeholder="Displayname..."
-                  underlineColorAndroid="rgba(0, 0, 0, 0)"
                   onChange={(event) => setDisplayName(event.target.value)}
                   value={displayName}
                   autoCorrect={false}
@@ -92,7 +91,6 @@ export default function Rgister({ navigation }) {
                 <TextInput
                   style={[styles.formInputText]}
                   placeholder="Email..."
-                  underlineColorAndroid="rgba(0, 0, 0, 0)"
                   onChange={(event) => setEmail(event.target.value)}
                   value={email}
                   autoCorrect={false}
@@ -110,7 +108,6 @@ export default function Rgister({ navigation }) {
                 <TextInput
                   style={[styles.formInputText]}
                   placeholder="Password..."
-                  underlineColorAndroid="rgba(0, 0, 0, 0)"
                   onChange={(event) => setPassword(event.target.value)}
                   value={password}
                   autoCorrect={false}
@@ -127,7 +124,6 @@ export default function Rgister({ navigation }) {
                 <TextInput
                   style={[styles.formInputText]}
                   placeholder="Confirm password..."
-                  underlineColorAndroid="rgba(0, 0, 0, 0)"
                   onChange={(event) => setrePassword(event.target.value)}
                   value={repassword}
                   autoCorrect={false}
@@ -172,10 +168,8 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 53,
     backgroundColor: "#fff",
-    flex: 1,
   },
   body: {
-    flex: 1,
     flexDirection: "column",
     justifyContent: "flex-start",
   },
@@ -199,7 +193,7 @@ const styles = StyleSheet.create({
   },
   formLabel: {
     backgroundColor: "#fff",
-    flex: 1,
+
     alignItems: "center",
     justifyContent: "center",
   },
