@@ -17,6 +17,7 @@ export default function Search({ navigation }) {
   const [searchResult, setSearchResult] = useState("");
 
   async function fetchName(userInput) {
+    console.log("userInput", userInput);
     const response = await axios.get(`${apiUrl}/search/${userInput}`);
     setSearchResult(response.data);
   }
@@ -34,10 +35,11 @@ export default function Search({ navigation }) {
                   <TextInput
                     style={styles.formInputText}
                     placeholder="Search..."
-                    onChange={(event) => setUserInput(event.target.value)}
+                    keyboardType="default"
+                    onChangeText={(text) => fetchName(text)}
                     value={userInput}
                     autoCorrect={false}
-                    returnKeyType="next"
+                    returnKeyType="search"
                     onSubmitEditing={(_) => fetchName(userInput)}
                   />
                 </View>
@@ -61,7 +63,9 @@ export default function Search({ navigation }) {
                   <TextInput
                     style={styles.formInputText}
                     placeholder="Search..."
-                    onChange={(event) => setUserInput(event.target.value)}
+                    onChangeText={(text) => {
+                      setUserInput(text), fetchName(text);
+                    }}
                     value={userInput}
                     autoCorrect={false}
                     returnKeyType="next"

@@ -14,6 +14,10 @@ export default function StartPage({ navigation, route }) {
     setAuctionList(response.data);
   }
 
+  useEffect(() => {
+    FetchAuctionList();
+  }, []);
+
   useFocusEffect(
     React.useCallback(() => {
       FetchAuctionList();

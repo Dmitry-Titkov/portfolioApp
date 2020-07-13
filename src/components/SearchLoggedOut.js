@@ -34,7 +34,7 @@ export default function Search({ navigation }) {
                   <TextInput
                     style={styles.formInputText}
                     placeholder="Search..."
-                    onChange={(event) => setUserInput(event.target.value)}
+                    onChangeText={(text) => fetchName(text)}
                     value={userInput}
                     autoCorrect={false}
                     returnKeyType="next"
@@ -61,7 +61,7 @@ export default function Search({ navigation }) {
                   <TextInput
                     style={styles.formInputText}
                     placeholder="Search..."
-                    onChange={(event) => setUserInput(event.target.value)}
+                    onChangeText={(text) => fetchName(text)}
                     value={userInput}
                     autoCorrect={false}
                     returnKeyType="next"

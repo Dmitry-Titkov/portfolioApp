@@ -95,7 +95,7 @@ export default function SetAuction() {
                   onChangeText={(text) => setMinBid(text)}
                   value={minBid}
                   autoCorrect={false}
-                  returnKeyType="next"
+                  returnKeyType="done"
                 />
               </View>
             </View>
@@ -110,7 +110,7 @@ export default function SetAuction() {
                   onChangeText={(text) => setEnd(text)}
                   value={end}
                   autoCorrect={false}
-                  returnKeyType="next"
+                  returnKeyType="done"
                 />
               </View>
             </View>
@@ -127,7 +127,7 @@ export default function SetAuction() {
                   value={imageUrl}
                   onSubmitEditing={(event) => setImageUrl(event.target.value)}
                   autoCorrect={false}
-                  returnKeyType="next"
+                  returnKeyType="done"
                 />
               </View>
             </View>
@@ -147,7 +147,7 @@ export default function SetAuction() {
                   onChangeText={(text) => setDescriptor(text)}
                   value={descriptor}
                   autoCorrect={false}
-                  returnKeyType="next"
+                  returnKeyType="done"
                   numberOfLines={8}
                 />
               </View>
