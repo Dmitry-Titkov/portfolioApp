@@ -33,10 +33,6 @@ export default function StartPage({ navigation, route }) {
           {auctionList.map((auction) => {
             return (
               <View key={auction.id}>
-                <Text style={{ fontSize: 20, textAlign: "center" }}>
-                  {auction.name}
-                  {"\n"}
-                </Text>
                 <Image
                   style={{ width: "100%", height: 200, resizeMode: "stretch" }}
                   source={{
@@ -45,9 +41,19 @@ export default function StartPage({ navigation, route }) {
                 />
                 <Text
                   style={{
+                    fontSize: 30,
+                    textAlign: "center",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {auction.name}
+                  {"\n"}
+                </Text>
+                <Text
+                  style={{
                     fontSize: 20,
                     textAlign: "center",
-                    marginTop: 30,
+                    marginTop: 10,
                     marginBottom: 20,
                   }}
                 >

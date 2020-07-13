@@ -6,6 +6,7 @@ import {
   Text,
   View,
   TextInput,
+  Alert,
 } from "react-native";
 import { signUp } from "../store/user/actions";
 import { useDispatch } from "react-redux";
@@ -26,6 +27,10 @@ export default function Register({ navigation }) {
     setUserList(response.data);
   }
 
+  function setEmailLowerCase(newEmail) {
+    setEmail(newEmail.toLowerCase());
+  }
+
   function SubmitForm() {
     dispatch(signUp(displayName, email, password));
     navigation.navigate("Login");
@@ -43,16 +48,16 @@ export default function Register({ navigation }) {
       window.alert("All fields must be filled in");
     } else {
       if (password.length < 8) {
-        window.alert("Minimum length for password is 8");
+        Alert.alert("Minimum length for password is 8");
       } else {
         if (password != repassword) {
-          window.alert("Both passwords have to be identical");
+          Alert.alert("Both passwords have to be identical");
         } else {
           if (userList.find((user) => user.display_name === displayName)) {
-            window.alert("This display name is already taken");
+            Alert.alert("This display name is already taken");
           } else {
             if (userList.find((mail) => mail.email === email)) {
-              window.alert("User with this email already exists");
+              Alert.alert("User with this email already exists");
             } else {
               SubmitForm();
             }
@@ -75,7 +80,7 @@ export default function Register({ navigation }) {
                 <TextInput
                   style={styles.formInputText}
                   placeholder="Displayname..."
-                  onChange={(event) => setDisplayName(event.target.value)}
+                  onChangeText={(text) => setDisplayName(text)}
                   value={displayName}
                   autoCorrect={false}
                   returnKeyType="next"
@@ -91,7 +96,9 @@ export default function Register({ navigation }) {
                 <TextInput
                   style={[styles.formInputText]}
                   placeholder="Email..."
-                  onChange={(event) => setEmail(event.target.value)}
+                  onChangeText={(text) => {
+                    setEmailLowerCase(text);
+                  }}
                   value={email}
                   autoCorrect={false}
                   keyboardType="email-address"
@@ -108,7 +115,7 @@ export default function Register({ navigation }) {
                 <TextInput
                   style={[styles.formInputText]}
                   placeholder="Password..."
-                  onChange={(event) => setPassword(event.target.value)}
+                  onChangeText={(text) => setPassword(text)}
                   value={password}
                   autoCorrect={false}
                   secureTextEntry={true}
@@ -124,7 +131,7 @@ export default function Register({ navigation }) {
                 <TextInput
                   style={[styles.formInputText]}
                   placeholder="Confirm password..."
-                  onChange={(event) => setrePassword(event.target.value)}
+                  onChangeText={(text) => setrePassword(text)}
                   value={repassword}
                   autoCorrect={false}
                   secureTextEntry={true}

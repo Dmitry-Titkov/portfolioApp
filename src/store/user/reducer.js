@@ -1,17 +1,4 @@
 import { LOG_OUT, LOGIN_SUCCESS, TOKEN_STILL_VALID } from "./actions";
-import { AsyncStorage } from "react-native";
-
-// const initialState = async () => {
-//   try {
-//     return {
-//       token: await AsyncStorage.getItem("_token"),
-//       id: await AsyncStorage.getItem("_id"),
-//     };
-//   } catch (error) {
-//     // Error retrieving data
-//     console.log(error.message);
-//   }
-// };
 
 export default function (state, action) {
   if (state === undefined) {

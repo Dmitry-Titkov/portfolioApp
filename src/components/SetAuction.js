@@ -10,7 +10,7 @@ import {
   Image,
 } from "react-native";
 import { apiUrl } from "../config/constants";
-
+import { selectToken } from "../store/user/selector";
 import { selectUser } from "../store/user/selector";
 import { useSelector } from "react-redux";
 
@@ -19,10 +19,9 @@ export default function SetAuction() {
   const [minBid, setMinBid] = useState("");
   const [descriptor, setDescriptor] = useState("");
   const [end, setEnd] = useState("");
-  const [imageUrl, setImageUrl] = useState(
-    "https://www.peoplechange.nl/wp-content/uploads/2017/04/placeholder.jpg"
-  );
+  const [imageUrl, setImageUrl] = useState("");
   const user = useSelector(selectUser);
+  const userToken = useSelector(selectToken);
 
   function SubmitForm() {
     var data = {
@@ -33,9 +32,9 @@ export default function SetAuction() {
       image: imageUrl,
     };
 
-    var header = { headers: { Authorization: `Bearer ${user.token}` } };
+    var header = { headers: { Authorization: `Bearer ${userToken}` } };
 
-    axios.post(`${apiUrl}/auctions/${user.id}/create`, data, header);
+    axios.post(`${apiUrl}/auctions/${user}/create`, data, header);
   }
   const regEx = /^\d{4}-\d{2}-\d{2}$/;
   const today = new Date();
@@ -108,7 +107,7 @@ export default function SetAuction() {
                 <TextInput
                   style={styles.formInputText}
                   placeholder="End date..."
-                  onChange={(event) => setEnd(event.target.value)}
+                  onChangeText={(text) => setEnd(text)}
                   value={end}
                   autoCorrect={false}
                   returnKeyType="next"
@@ -131,15 +130,13 @@ export default function SetAuction() {
                 />
               </View>
             </View>
-            <View style={styles.formLabel}>
-              <Text style={styles.labelText}>Image preview</Text>
-            </View>
-            <Image
-              style={{ width: "100%", height: 200, resizeMode: "stretch" }}
+            <View style={styles.formLabel}></View>
+            {/* <Image
+              style={{ width: "100%", height: 150, resizeMode: "stretch" }}
               source={{
                 uri: imageUrl,
               }}
-            />
+            /> */}
             <View style={[styles.formRow]}>
               <View style={styles.formInputControl}>
                 <TextInput
@@ -157,12 +154,9 @@ export default function SetAuction() {
             </View>
 
             <View style={styles.formRowButtons}>
-              <TouchableHighlight
-                style={styles.buttonTouch}
-                onPress={validationForm}
-              >
+              <TouchableHighlight onPress={() => validationForm()}>
                 <View style={styles.button}>
-                  <Text style={styles.buttonText}>Sell product</Text>
+                  <Text style={styles.buttonText}>Sell item</Text>
                 </View>
               </TouchableHighlight>
             </View>

@@ -43,14 +43,6 @@ export default function Search({ navigation }) {
                 </View>
               </View>
             </View>
-            <Text
-              style={{
-                fontSize: 20,
-                textAlign: "center",
-              }}
-            >
-              Please fill in the searchbar
-            </Text>
           </View>
         </ScrollView>
       </View>
@@ -128,10 +120,6 @@ export default function Search({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 53,
-    backgroundColor: "#fff",
-  },
   body: {
     flexDirection: "column",
     justifyContent: "flex-start",

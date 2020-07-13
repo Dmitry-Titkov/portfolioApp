@@ -3,6 +3,7 @@ import { Text, View, Image, Button, StyleSheet } from "react-native";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { apiUrl } from "../config/constants";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default function StartPage({ navigation, route }) {
   const [auctionList, setAuctionList] = useState([]);
@@ -21,53 +22,61 @@ export default function StartPage({ navigation, route }) {
 
   return (
     <View style={styles.viewfix}>
-      <View style={styles.viewfix}>
-        {auctionList.map((auction) => {
-          return (
-            <View key={auction.id}>
-              <Text style={{ fontSize: 20, textAlign: "center" }}>
-                {auction.name}
-                {"\n"}
-              </Text>
-              <Image
-                style={{ width: "100%", height: 200, resizeMode: "stretch" }}
-                source={{
-                  uri: auction.image,
-                }}
-              />
-              <Text
-                style={{
-                  fontSize: 20,
-                  textAlign: "center",
-                  marginTop: 30,
-                  marginBottom: 20,
-                }}
-              >
-                Bids placed: {auction.bids.length}
-              </Text>
-              <Text
-                style={{
-                  fontSize: 20,
-                  textAlign: "center",
-                  marginTop: 10,
-                  marginBottom: 20,
-                }}
-              >
-                Auction end: {auction.date_end.substring(0, 10)}
-              </Text>
-              <Button
-                title="Details"
-                style={{ marginTop: 30, marginBot: 30 }}
-                onPress={() =>
-                  navigation.navigate("Details", {
-                    auctionId: auction.id,
-                  })
-                }
-              />
-            </View>
-          );
-        })}
-      </View>
+      <ScrollView>
+        <View style={styles.viewfix}>
+          {auctionList.map((auction) => {
+            return (
+              <View key={auction.id}>
+                <Image
+                  style={{ width: "100%", height: 200, resizeMode: "stretch" }}
+                  source={{
+                    uri: auction.image,
+                  }}
+                />
+                <Text
+                  style={{
+                    fontSize: 30,
+                    textAlign: "center",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {auction.name}
+                  {"\n"}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    textAlign: "center",
+                    marginTop: 20,
+                    marginBottom: 10,
+                  }}
+                >
+                  Bids placed: {auction.bids.length}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    textAlign: "center",
+                    marginTop: 10,
+                    marginBottom: 20,
+                  }}
+                >
+                  Auction end: {auction.date_end.substring(0, 10)}
+                </Text>
+                <Button
+                  title="Details"
+                  style={{ marginTop: 30, marginBot: 30 }}
+                  onPress={() =>
+                    navigation.navigate("Details", {
+                      auctionId: auction.id,
+                    })
+                  }
+                />
+              </View>
+            );
+          })}
+        </View>
+      </ScrollView>
     </View>
   );
 }
