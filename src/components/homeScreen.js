@@ -4,6 +4,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { apiUrl } from "../config/constants";
 import { ScrollView } from "react-native-gesture-handler";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function StartPage({ navigation, route }) {
   const [auctionList, setAuctionList] = useState([]);
@@ -13,9 +14,12 @@ export default function StartPage({ navigation, route }) {
     setAuctionList(response.data);
   }
 
-  useEffect(() => {
-    FetchAuctionList();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      FetchAuctionList();
+    }, [])
+  );
+
   auctionList.sort(function (a, b) {
     return b.bids.length - a.bids.length;
   });

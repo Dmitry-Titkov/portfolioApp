@@ -8,27 +8,15 @@ import {
   Text,
   View,
   AsyncStorage,
+  Image,
   Button,
 } from "react-native";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../src/store/user/selector";
 import { apiUrl } from "../config/constants";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function UserPage({ navigation, route }) {
-  const userId = route.params?.userId ?? "2";
-  const [displayName, setDisplayName] = useState("");
-
-  async function FetchUser() {
-    const response = await axios.get(`${apiUrl}/user/${userId}`);
-    setDisplayName(response.data.display_name);
-    console.log(response.data);
-  }
-
-  useEffect(() => {
-    FetchUser();
-  }, []);
-  return <View></View>;
-
   const styles = StyleSheet.create({
     container: {
       marginTop: 53,
@@ -90,4 +78,77 @@ export default function UserPage({ navigation, route }) {
       alignItems: "center",
     },
   });
+
+  const userId = route.params?.userId ?? "2";
+  const [displayName, setDisplayName] = useState("");
+  const [auctions, setAuctions] = useState([]);
+
+  async function FetchUser() {
+    const response = await axios.get(`${apiUrl}/user/${userId}`);
+    setDisplayName(response.data.display_name);
+    setAuctions(response.data.auctions);
+    console.log(response.data.auctions);
+  }
+
+  useFocusEffect(
+    React.useCallback(() => {
+      FetchUser();
+    }, [])
+  );
+
+  return (
+    <View style={styles.viewfix}>
+      <View>
+        <Text
+          style={{
+            fontSize: 30,
+            textAlign: "center",
+            fontWeight: "bold",
+          }}
+        >
+          {displayName}
+        </Text>
+        <Text
+          style={{
+            fontSize: 20,
+            textAlign: "center",
+          }}
+        >
+          {"\n"}
+          Auctions of the user:
+          {"\n"}
+        </Text>
+      </View>
+
+      <ScrollView>
+        <View style={styles.viewfix}>
+          {auctions.map((auction) => {
+            return (
+              <View key={auction.id}>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    textAlign: "center",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {auction.name}
+                </Text>
+
+                <Button
+                  title="Details"
+                  style={{ marginTop: 30, marginBot: 30 }}
+                  onPress={() =>
+                    navigation.navigate("Details", {
+                      auctionId: auction.id,
+                    })
+                  }
+                />
+              </View>
+            );
+          })}
+        </View>
+      </ScrollView>
+    </View>
+  );
 }

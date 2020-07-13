@@ -76,7 +76,7 @@ export default function SetAuction() {
                 <TextInput
                   style={styles.formInputText}
                   placeholder="Product name..."
-                  onChange={(event) => setTitle(event.target.value)}
+                  onChangeText={(text) => setTitle(text)}
                   value={title}
                   autoCorrect={false}
                   returnKeyType="next"
@@ -92,7 +92,7 @@ export default function SetAuction() {
                   style={styles.formInputText}
                   placeholder="Minimum price..."
                   keyboardType="numeric"
-                  onChange={(event) => setMinBid(event.target.value)}
+                  onChangeText={(text) => setMinBid(text)}
                   value={minBid}
                   autoCorrect={false}
                   returnKeyType="next"
@@ -123,8 +123,9 @@ export default function SetAuction() {
                 <TextInput
                   style={styles.formInputText}
                   placeholder="Image url..."
-                  onChange={(event) => setImageUrl(event.target.value)}
+                  onChangeText={(text) => setImageUrl(text)}
                   value={imageUrl}
+                  onSubmitEditing={(event) => setImageUrl(event.target.value)}
                   autoCorrect={false}
                   returnKeyType="next"
                 />
@@ -143,11 +144,10 @@ export default function SetAuction() {
                   style={styles.formInputTextArea}
                   multiline={true}
                   placeholder="Description..."
-                  onChange={(event) => setDescriptor(event.target.value)}
+                  onChangeText={(text) => setDescriptor(text)}
                   value={descriptor}
                   autoCorrect={false}
-                  returnKeyType="go"
-                  onSubmitEditing={(event) => setDescriptor(event.target.value)}
+                  returnKeyType="next"
                   numberOfLines={8}
                 />
               </View>

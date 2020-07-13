@@ -8,8 +8,6 @@ import {
   StyleSheet,
   ScrollView,
   TextInput,
-  Picker,
-  TouchableHighlight,
 } from "react-native";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -18,9 +16,6 @@ import { selectUser } from "../../src/store/user/selector";
 import { selectToken } from "../../src/store/user/selector";
 
 export default function DetailPage({ navigation, route }) {
-  console.log("navigation", navigation);
-  console.log("route", route);
-
   const styles = StyleSheet.create({
     body: {
       flexDirection: "column",
@@ -91,12 +86,13 @@ export default function DetailPage({ navigation, route }) {
   const fetchItem = auctionId - 1;
   const [auctionList, setAuctionList] = useState([]);
   const [bidByUser, setBidByUser] = useState("");
-  const [reviewByUser, setReviewByUser] = useState("");
+  const [reviewByUser, setReviewByUser] = useState([]);
   const [placedBids, setPlacedBids] = useState([]);
   const [placeReview, setPlaceReview] = useState([]);
   const [selectedStars, setSelectedStars] = useState(1);
   const [displayName, setDisplayName] = useState("");
   const [userId, setUserId] = useState("");
+  const [placedMinimumBid, setplacedMinimumBid] = useState("");
   const user = useSelector(selectUser);
   const userToken = useSelector(selectToken);
 
@@ -104,7 +100,7 @@ export default function DetailPage({ navigation, route }) {
     const response = await axios.get(`${apiUrl}`);
     setAuctionList(response.data[fetchItem]);
     setPlacedBids(response.data[fetchItem].bids);
-    console.log(response.data[fetchItem].bids);
+    setplacedMinimumBid(response.data[fetchItem].minimum_bid);
   }
   async function FetchUser() {
     const response = await axios.get(`${apiUrl}/user/${auctionId}`);
@@ -125,25 +121,27 @@ export default function DetailPage({ navigation, route }) {
     FetchReviews();
   }, []);
   function PlaceBid() {
-    console.log("original bid", placedBids[placedBids.length - 1].amount);
-    if (bidByUser > placedBids[placedBids.length - 1].amount) {
-      var data = {
-        chosenAuctionId: auctionList.id,
-        newAmount: bidByUser,
-        userId: user,
-      };
-
-      var header = { headers: { Authorization: `Bearer ${userToken}` } };
-
-      axios.post(`${apiUrl}/auction/${auctionList.id}/bid`, data, header);
+    if (bidByUser < placedMinimumBid) {
+      window.alert("Atleast bid the minimum value");
     } else {
-      window.alert("There's no point bidding less then the highest bid");
+      if (bidByUser > placedBids[placedBids.length - 1].amount) {
+        var data = {
+          chosenAuctionId: auctionList.id,
+          newAmount: bidByUser,
+          userId: user,
+        };
+
+        var header = { headers: { Authorization: `Bearer ${userToken}` } };
+
+        axios.post(`${apiUrl}/auctions/${auctionList.id}/bid`, data, header);
+      } else {
+        window.alert("There's no point bidding less then the highest bid");
+      }
     }
   }
 
   function PlaceReview() {
     var data = {
-      auctionId: auctionList.id,
       rating: selectedStars,
       comment: reviewByUser,
       userId: user,
@@ -178,18 +176,6 @@ export default function DetailPage({ navigation, route }) {
                 }}
               />
               <View style={styles.formRowButtons}>
-                {/* <TouchableHighlight
-                  style={styles.buttonTouch}
-                  onPress={() =>
-                    navigation.navigate("UserPage", {
-                      userId: userId,
-                    })
-                  }
-                >
-                  <View style={styles.button}>
-                    <Text style={styles.buttonText}>{displayName}</Text>
-                  </View>
-                </TouchableHighlight> */}
                 <Button
                   title={displayName}
                   onPress={() => {
@@ -217,13 +203,18 @@ export default function DetailPage({ navigation, route }) {
                       }}
                     >
                       Bids
+                      {"\n"}
+                    </Text>
+                    <Text style={{ textAlign: "center" }}>
+                      Minimum bid:{auctionList.minimum_bid}{" "}
                     </Text>
                   </View>
                   {placedBids.map((bids) => {
                     return (
-                      <View key={bids.id}>
+                      <View key={bids.id} style={styles.underLine}>
                         <Text style={{ textAlign: "center" }}>
-                          {bids.amount}
+                          Date placed: {bids.createdAt.substring(0, 10)} {"\n"}
+                          Amount: {bids.amount}
                         </Text>
                       </View>
                     );
@@ -257,7 +248,7 @@ export default function DetailPage({ navigation, route }) {
                   </View>
                   {placeReview.map((reviews) => {
                     return (
-                      <View key={reviews.id}>
+                      <View key={reviews.id} style={styles.underLine}>
                         <Text style={{ textAlign: "center" }}>
                           Rating: {reviews.rating}
                           {"\n"}
@@ -278,7 +269,6 @@ export default function DetailPage({ navigation, route }) {
                     <View style={styles.formInputControl}>
                       <TextInput
                         style={(styles.formInputText, { padding: 5 })}
-                        keyboardType="numeric"
                         maxLength={1}
                         placeholder="Leave a rating..."
                         onChange={(event) =>
@@ -298,7 +288,7 @@ export default function DetailPage({ navigation, route }) {
                       style={styles.formInputTextArea}
                       multiline={true}
                       placeholder="Review..."
-                      onChange={(text) => setReviewByUser(text)}
+                      onChange={(event) => setReviewByUser(event.target.value)}
                       value={reviewByUser}
                       autoCorrect={false}
                       returnKeyType="next"
