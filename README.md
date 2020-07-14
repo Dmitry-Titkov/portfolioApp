@@ -40,13 +40,13 @@ Database model: [Database.png](https://user-images.githubusercontent.com/6385756
 - apply what I've learned in Codaisseur
 - Showcase development approach of using user stories and a wireframe
 
-## Reposetories
+## Repositories
 
 front end: [frontEnd](https://github.com/Dmitry-Titkov/portfolioApp)
 
 back end: [backEnd](https://github.com/Dmitry-Titkov/portfolioAppBack)
 
-## Instalation
+## Installation
 
 'Git clone' or download the repo
 
