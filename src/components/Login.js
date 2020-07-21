@@ -49,7 +49,7 @@ export default function SignIn({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
+    <View>
       <ScrollView>
         <View style={styles.body}>
           <View style={[styles.formRow]}>

@@ -61,7 +61,9 @@ export default function Search({ navigation }) {
                   <TextInput
                     style={styles.formInputText}
                     placeholder="Search..."
-                    onChangeText={(text) => fetchName(text)}
+                    onChangeText={(text) => {
+                      setUserInput(text), fetchName(text);
+                    }}
                     value={userInput}
                     autoCorrect={false}
                     returnKeyType="next"
